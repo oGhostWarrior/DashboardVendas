@@ -1,7 +1,10 @@
 "use client";
-
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { Home, MessageSquare, BarChart3, Settings, Users, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import Image from 'next/image';
+
 
 interface SidebarProps {
   isOpen: boolean;
@@ -9,7 +12,7 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { icon: Home, label: 'Dashboard', href: '/', active: true },
+  { icon: Home, label: 'Dashboard', href: '/'},
   { icon: MessageSquare, label: 'Conversas', href: '/conversations' },
   { icon: BarChart3, label: 'Relatórios', href: '/reports' },
   { icon: Users, label: 'Equipe', href: '/team' },
@@ -17,9 +20,9 @@ const menuItems = [
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const pathname = usePathname(); // Pega a rota atual
   return (
     <>
-      {/* Overlay for mobile */}
       {isOpen && (
         <div 
           className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
@@ -32,11 +35,14 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         isOpen ? "translate-x-0" : "-translate-x-full"
       )}>
         <div className="flex items-center justify-between p-4 border-b">
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center">
-              <MessageSquare className="w-5 h-5 text-white" />
-            </div>
-            <span className="font-semibold text-gray-900">SalesChat</span>
+          <div className="flex items-center space-x-3">
+            <Image
+              src="/Icon.png"
+              alt="Logo da Axon"
+              width={32}
+              height={32}
+            />
+            <span className="font-semibold text-gray-900">Axon</span>
           </div>
           <button
             onClick={onClose}
@@ -47,21 +53,25 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
         
         <nav className="mt-8">
-          {menuItems.map((item) => (
-            <a
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "flex items-center px-4 py-3 text-sm font-medium transition-colors",
-                item.active
-                  ? "text-blue-600 bg-blue-50 border-r-2 border-blue-600"
-                  : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-              )}
-            >
-              <item.icon className="w-5 h-5 mr-3" />
-              {item.label}
-            </a>
-          ))}
+          {menuItems.map((item) => {
+            const isActive = pathname === item.href; // Verificação dinâmica
+
+            return (
+              <Link // Usando o componente Link
+                key={item.href}
+                href={item.href}
+                className={cn(
+                  "flex items-center px-4 py-3 text-sm font-medium transition-colors",
+                  isActive
+                    ? "text-orange-600 bg-orange-50 border-r-2 border-orange-600" // Estilo se estiver ativo
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50" // Estilo se não estiver ativo
+                )}
+              >
+                <item.icon className="w-5 h-5 mr-3" />
+                {item.label}
+              </Link>
+            );
+          })}
         </nav>
         
         <div className="absolute bottom-0 w-full p-4 border-t">

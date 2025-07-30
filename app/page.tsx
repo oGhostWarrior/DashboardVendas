@@ -55,7 +55,7 @@ export default function Home() {
             <h1 className="text-xl font-semibold text-gray-900">Dashboard de Vendas</h1>
           </div>
           <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
               <span className="text-white text-sm font-medium">MS</span>
             </div>
           </div>

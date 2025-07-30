@@ -87,14 +87,14 @@ export function ConversationsList({
                 placeholder="Buscar cliente..."
                 value={searchTerm}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm w-full md:w-64"
+                className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm w-full md:w-64"
               />
             </div>
             
             <select
               value={statusFilter}
               onChange={(e) => onStatusFilterChange(e.target.value as any)}
-              className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+              className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
             >
               <option value="all">Todos os Status</option>
               <option value="active">Ativo</option>
@@ -108,7 +108,7 @@ export function ConversationsList({
       <div className="divide-y">
         {loading && (
           <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
             <p className="text-gray-500">Carregando conversas...</p>
           </div>
         )}
@@ -122,7 +122,7 @@ export function ConversationsList({
             <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2 mb-1">
-                  <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+                  <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
                     <User className="w-5 h-5 text-white" />
                   </div>
                   <div className="flex-1">
@@ -190,7 +190,7 @@ export function ConversationsList({
                       e.stopPropagation();
                       onAIAnalysisClick(conversation);
                     }}
-                    className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                    className="p-2 text-orange-600 hover:bg-orange-100 rounded-lg transition-colors"
                     title="Ver análise da IA"
                   >
                     <Bot className="w-4 h-4" />
