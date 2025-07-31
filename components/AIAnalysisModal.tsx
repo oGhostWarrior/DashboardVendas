@@ -54,7 +54,7 @@ export function AIAnalysisModal({ conversation, analysis, loading = false, onClo
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center space-x-3">
             <div className="p-2 bg-blue-50 rounded-lg">
-              <Bot className="w-6 h-6 text-blue-600" />
+              <Bot className="w-6 h-6 text-orange-600" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Análise da IA</h2>
@@ -104,8 +104,8 @@ export function AIAnalysisModal({ conversation, analysis, loading = false, onClo
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-gray-600">Intenção de Compra</span>
                 <div className="flex items-center space-x-1">
-                  <TrendingUp className="w-4 h-4 text-blue-600" />
-                  <span className="text-sm font-bold text-blue-600">
+                  <TrendingUp className="w-4 h-4 text-orange-600" />
+                  <span className="text-sm font-bold text-orange-600">
                     {Math.round(analysis.intentProbability * 100)}%
                   </span>
                 </div>
@@ -132,7 +132,7 @@ export function AIAnalysisModal({ conversation, analysis, loading = false, onClo
               {analysis.keyTopics.map((topic, index) => (
                 <span
                   key={index}
-                  className="px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-sm font-medium"
+                  className="px-3 py-1 bg-blue-50 text-orange-700 rounded-full text-sm font-medium"
                 >
                   {topic}
                 </span>
