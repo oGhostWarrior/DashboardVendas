@@ -1,4 +1,4 @@
-// Tipos baseados no schema Supabase real
+// Tipos baseados no schema Supabase
 export interface Empresa {
   id: number;
   created_at: string;

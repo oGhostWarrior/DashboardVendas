@@ -8,6 +8,8 @@ import { ConversationSummary } from '@/types';
 import { useConversations } from '@/hooks/useSupabaseData';
 import { AnaliseModal } from '@/components/AnaliseModal';
 import { ConversationModal } from '@/components/ConversationModal';
+import { apiClient } from '@/lib/api'; 
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
   const [selectedConversation, setSelectedConversation] = useState<ConversationSummary | null>(null);
@@ -18,6 +20,7 @@ export default function Home() {
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'pending' | 'closed'>('all');
 
   // Hook para dados do Supabase
+  const { toast } = useToast();
   const { conversations, loading: conversationsLoading } = useConversations(
     undefined, // empresaId
     searchTerm
@@ -32,6 +35,25 @@ export default function Home() {
     setSelectedConversation(conversation);
     setShowAnalise(true);
   };
+
+  const handleRequestAnalysis = async (clienteId: number) => {
+    try {
+      toast({
+        title: "Processando Análise",
+        description: "A análise da IA foi solicitada e estará disponível em breve.",
+      });
+      await apiClient.requestAIAnalysis(clienteId);
+    } catch (error) {
+      console.error("Erro ao solicitar análise:", error);
+      toast({
+        variant: "destructive",
+        title: "Erro",
+        description: "Não foi possível solicitar a análise da IA.",
+      });
+    }
+  };
+
+  
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -70,6 +92,7 @@ export default function Home() {
               loading={conversationsLoading}
               onConversationClick={handleConversationClick}
               onAIAnalysisClick={handleAnaliseClick}
+              onAnalysisRequest={handleRequestAnalysis}
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
               statusFilter={statusFilter}

@@ -14,6 +14,8 @@ interface ConversationsListProps {
   onSearchChange: (search: string) => void;
   statusFilter: 'all' | 'active' | 'pending' | 'closed';
   onStatusFilterChange: (status: 'all' | 'active' | 'pending' | 'closed') => void;
+
+  onAnalysisRequest: (clienteId: number) => void;
 }
 
 export function ConversationsList({ 
@@ -21,6 +23,7 @@ export function ConversationsList({
   loading = false,
   onConversationClick, 
   onAIAnalysisClick,
+  onAnalysisRequest,
   searchTerm,
   onSearchChange,
   statusFilter,
@@ -122,6 +125,29 @@ export function ConversationsList({
             <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2 mb-1">
+
+                  {conversation.analiseVenda ? (
+                    // Se já existe análise, mostra o botão para visualizá-la
+                    <button onClick={(e) => {
+                        e.stopPropagation();
+                        onAIAnalysisClick(conversation);
+                      }}
+                      className="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+                      title="Ver análise da IA">
+                      <Bot className="w-4 h-4" />
+                    </button>
+                  ) : (
+                      // Se não existe, mostra o botão para solicitar uma nova
+                      <button onClick={(e) => {
+                          e.stopPropagation();
+                          onAnalysisRequest(conversation.cliente.id); // Chama a nova função
+                        }}
+                        className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                        title="Analisar conversa com I.A">
+                        <Bot className="w-4 h-4" />
+                      </button>
+                    )}
+                    
                   <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
                     <User className="w-5 h-5 text-white" />
                   </div>

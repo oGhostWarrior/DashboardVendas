@@ -7,6 +7,8 @@ import { AnaliseModal } from '@/components/AnaliseModal';
 import { ConversationModal } from '@/components/ConversationModal';
 import { ConversationSummary } from '@/types';
 import { useConversations, useAnaliseVenda } from '@/hooks/useSupabaseData';
+import { apiClient } from '@/lib/api'; // Supondo que você tenha um apiClient
+import { useToast } from "@/hooks/use-toast"; // Para dar feedback ao usuário
 
 export default function ConversationsPage() {
   const [selectedConversation, setSelectedConversation] = useState<ConversationSummary | null>(null);
@@ -15,6 +17,8 @@ export default function ConversationsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'pending' | 'closed'>('all');
+
+  const { toast } = useToast();
 
   // Hooks customizados para integração com Supabase
   const { conversations, loading: conversationsLoading } = useConversations();
@@ -31,6 +35,25 @@ export default function ConversationsPage() {
   const handleAIAnalysisClick = (conversation: ConversationSummary) => {
     setSelectedConversation(conversation);
     setShowAIAnalysis(true);
+  };
+
+
+  const handleRequestAnalysis = async (clienteId: number) => {
+    try {
+      await apiClient.requestAIAnalysis(clienteId);
+      toast({
+        title: "Análise solicitada",
+        description: "A análise da conversa foi solicitada com sucesso.",
+      });
+      
+    } catch (error) {
+      console.error("Erro ao solicitar análise:", error);
+      toast({
+        title: "Erro ao solicitar análise",
+        description: "Ocorreu um erro ao solicitar a análise da conversa.",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -69,6 +92,7 @@ export default function ConversationsPage() {
               loading={conversationsLoading}
               onConversationClick={handleConversationClick}
               onAIAnalysisClick={handleAIAnalysisClick}
+              onAnalysisRequest={handleRequestAnalysis}
               searchTerm={searchTerm}
               onSearchChange={setSearchTerm}
               statusFilter={statusFilter}

@@ -5,6 +5,13 @@ class ApiClient {
   private baseURL: string;
   private token: string | null = null;
 
+  async requestAIAnalysis(clienteId: number) {
+    // Note que o ID vai na URL, não no corpo da requisição
+    return this.request<any>(`/clientes/${clienteId}/analyze`, {
+      method: 'POST',
+    });
+  }
+
   constructor(baseURL: string) {
     this.baseURL = baseURL;
     // Recupera token do localStorage se disponível
