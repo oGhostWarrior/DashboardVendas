@@ -181,9 +181,9 @@ export function ConversationsList({
                     <MessageSquare className="w-4 h-4" />
                     <span>{conversation.totalMensagens} mensagens</span>
                   </div>
-                  {conversation.cliente.empresa && (
+                  {conversation.cliente.user && (
                     <span className="text-xs bg-gray-100 px-2 py-1 rounded">
-                      {conversation.cliente.empresa.nome}
+                      {conversation.cliente.user.name}
                     </span>
                   )}
                 </div>

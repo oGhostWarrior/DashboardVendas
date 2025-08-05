@@ -20,17 +20,17 @@ export class SupabaseService {
   }
 
   // Clientes
-  static async getClientes(empresaId?: number, search?: string) {
+  static async getClientes(userId?: number, search?: string) {
     let query = supabase
       .from('Clientes')
       .select(`
         *,
-        empresa:Empresa(*)
+        user:users(*)
       `)
       .order('created_at', { ascending: false });
 
-    if (empresaId) {
-      query = query.eq('IDempresa', empresaId);
+    if (userId) {
+      query = query.eq('IDempresa', userId);
     }
 
     if (search) {
@@ -204,9 +204,9 @@ export class SupabaseService {
   }
 
   // Conversação resumida
-  static async getConversationSummaries(empresaId?: number, search?: string) {
+  static async getConversationSummaries(userId?: number, search?: string) {
     try {
-      const clientes = await this.getClientes(empresaId, search);
+      const clientes = await this.getClientes(userId, search);
       const summaries = [];
 
       for (const cliente of clientes) {

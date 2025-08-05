@@ -118,10 +118,10 @@ export function AnaliseModal({ conversationSummary, onClose }: AnaliseModalProps
                     <p className="text-sm font-medium text-gray-900">Total de Mensagens</p>
                     <p className="text-xs text-gray-500">{conversationSummary.totalMensagens} mensagens</p>
                   </div>
-                  {conversationSummary.cliente.empresa && (
+                  {conversationSummary.cliente.user && (
                     <div>
                       <p className="text-sm font-medium text-gray-900">Empresa</p>
-                      <p className="text-xs text-gray-500">{conversationSummary.cliente.empresa.nome}</p>
+                      <p className="text-xs text-gray-500">{conversationSummary.cliente.user.name}</p>
                     </div>
                   )}
                   <div>

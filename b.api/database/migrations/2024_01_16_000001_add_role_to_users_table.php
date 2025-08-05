@@ -16,6 +16,7 @@ class AddRoleToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->enum('role', ['vendedor', 'gerente', 'administrador'])->default('vendedor');
             $table->boolean('active')->default(true);
+            $table->string('whatsapp_number')->nullable()->unique()->after('email');
         });
     }
 
@@ -28,6 +29,7 @@ class AddRoleToUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropColumn(['role', 'active']);
+            $table->dropColumn(['role', 'active', 'whatsapp_number']);
         });
     }
 }

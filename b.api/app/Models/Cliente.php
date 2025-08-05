@@ -10,13 +10,6 @@ class Cliente extends Model
 {
     use HasFactory;
 
-    /**
-     * O nome da tabela associada ao model.
-     * O Laravel tentaria adivinhar "clientes" (plural), mas como sua tabela
-     * se chama 'Clientes' (com 'C' maiúsculo), é bom especificar.
-     *
-     * @var string
-     */
     protected $table = 'Clientes';
 
     /**
@@ -31,7 +24,6 @@ class Cliente extends Model
         'clienteWhatsapp',
         'botAtivo',
         'conversationID',
-        'IDempresa',
         'user_id',
     ];
 
@@ -45,21 +37,7 @@ class Cliente extends Model
         'created_at' => 'datetime',
         'botAtivo' => 'boolean',
     ];
-
-    /**
-     * Define a relação de pertencimento a uma Empresa.
-     * Um Cliente pertence a uma Empresa.
-     *
-     * O Eloquent vai procurar por uma chave estrangeira chamada 'IDempresa'
-     * na tabela 'Clientes' para fazer a ligação com a tabela 'Empresa'.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function empresa(): BelongsTo
-    {
-        return $this->belongsTo(Empresa::class, 'IDempresa');
-    }
-
+    
     /**
      * Define a relação de pertencimento a um User (vendedor responsável).
      * Um Cliente pertence a um User.
@@ -68,7 +46,7 @@ class Cliente extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     /**
