@@ -2,7 +2,12 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\N8nController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\MensagemController;
+use App\Http\Controllers\AnaliseVendaController;
+use App\Http\Controllers\DashboardController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -14,8 +19,36 @@ use App\Http\Controllers\N8nController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Rotas de autenticação
+Route::post('/login', [AuthController::class, 'login']);
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/logout', [AuthController::class, 'logout']);
+    Route::get('/me', [AuthController::class, 'me']);
+    
+    // Registro de usuários (apenas administradores)
+    Route::post('/register', [AuthController::class, 'register'])->middleware('role:administrador');
 });
 
-Route::post('/clientes/{cliente}/analyze', [N8nController::class, 'requestAnalysis']);
+// Rotas protegidas por autenticação
+Route::middleware('auth:sanctum')->group(function () {
+    
+    // Dashboard
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
+    Route::get('/dashboard/charts', [DashboardController::class, 'charts'])->middleware('role:gerente,administrador');
+    
+    // Clientes
+    Route::get('/clientes', [ClienteController::class, 'index']);
+    Route::get('/clientes/{cliente}', [ClienteController::class, 'show']);
+    Route::put('/clientes/{cliente}', [ClienteController::class, 'update']);
+    Route::post('/clientes/{cliente}/assign', [ClienteController::class, 'assignToUser'])->middleware('role:gerente,administrador');
+    
+    // Mensagens
+    Route::get('/clientes/{cliente}/mensagens', [MensagemController::class, 'index']);
+    Route::get('/mensagens/{mensagem}', [MensagemController::class, 'show']);
+    
+    // Análises de IA
+    Route::get('/analises', [AnaliseVendaController::class, 'index']);
+    Route::get('/clientes/{cliente}/analise', [AnaliseVendaController::class, 'show']);
+    Route::post('/clientes/{cliente}/analyze', [AnaliseVendaController::class, 'requestAnalysis']);
+});
+

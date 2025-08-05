@@ -40,5 +40,30 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'active' => 'boolean',
     ];
+
+    /**
+     * Relacionamento com clientes (vendedor responsável)
+     */
+    public function clientes()
+    {
+        return $this->hasMany(Cliente::class);
+    }
+
+    /**
+     * Verifica se o usuário tem uma determinada role
+     */
+    public function hasRole($role)
+    {
+        return $this->role === $role;
+    }
+
+    /**
+     * Verifica se o usuário tem uma das roles especificadas
+     */
+    public function hasAnyRole($roles)
+    {
+        return in_array($this->role, $roles);
+    }
 }

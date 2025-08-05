@@ -32,6 +32,7 @@ class Cliente extends Model
         'botAtivo',
         'conversationID',
         'IDempresa',
+        'user_id',
     ];
 
     /**
@@ -57,5 +58,32 @@ class Cliente extends Model
     public function empresa(): BelongsTo
     {
         return $this->belongsTo(Empresa::class, 'IDempresa');
+    }
+
+    /**
+     * Define a relação de pertencimento a um User (vendedor responsável).
+     * Um Cliente pertence a um User.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Relacionamento com mensagens
+     */
+    public function mensagens()
+    {
+        return $this->hasMany(Mensagem::class, 'cliente_id');
+    }
+
+    /**
+     * Relacionamento com análises de venda
+     */
+    public function analisesVenda()
+    {
+        return $this->hasMany(AnalisesVenda::class, 'cliente_id');
     }
 }
