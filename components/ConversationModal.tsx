@@ -149,10 +149,10 @@ export function ConversationModal({ conversationSummary, onClose }: Conversation
             {conversationSummary.ultimaMensagem && (
               <span>Última mensagem: {formatMessageTime(conversationSummary.ultimaMensagem.created_at)}</span>
             )}
-            {conversationSummary.cliente.empresa && (
+            {conversationSummary.cliente.user && (
               <>
                 <span>•</span>
-                <span>Empresa: {conversationSummary.cliente.empresa.nome}</span>
+                <span>Empresa: {conversationSummary.cliente.user.name}</span>
               </>
             )}
           </div>

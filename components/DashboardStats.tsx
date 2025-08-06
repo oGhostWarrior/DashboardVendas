@@ -69,8 +69,8 @@ export function DashboardStats() {
         <div key={stat.name} className="bg-white p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="p-2 bg-blue-50 rounded-lg">
-                <stat.icon className="w-4 h-4 text-blue-600" />
+              <div className="p-2 bg-orange-50 rounded-lg">
+                <stat.icon className="w-4 h-4 text-orange-600" />
               </div>
             </div>
             <span className={`text-xs font-medium ${

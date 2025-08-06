@@ -5,7 +5,6 @@ const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Funções para interagir com as tabelas do seu schema
 export class SupabaseService {
   
   // Empresas
@@ -20,17 +19,17 @@ export class SupabaseService {
   }
 
   // Clientes
-  static async getClientes(empresaId?: number, search?: string) {
+  static async getClientes(userId?: number, search?: string) {
     let query = supabase
       .from('Clientes')
       .select(`
         *,
-        empresa:Empresa(*)
+        user:users(*)
       `)
       .order('created_at', { ascending: false });
 
-    if (empresaId) {
-      query = query.eq('IDempresa', empresaId);
+    if (userId) {
+      query = query.eq('IDempresa', userId);
     }
 
     if (search) {
@@ -155,7 +154,7 @@ export class SupabaseService {
         .from('Clientes')
         .select('*', { count: 'exact', head: true });
 
-      // Clientes ativos (com bot ativo)
+      // Clientes ativos
       const { count: clientesAtivos } = await supabase
         .from('Clientes')
         .select('*', { count: 'exact', head: true })
@@ -185,9 +184,9 @@ export class SupabaseService {
 
       // Empresas ativas
       const { count: empresasAtivas } = await supabase
-        .from('Empresa')
+        .from('users')
         .select('*', { count: 'exact', head: true })
-        .eq('status', 'Ativo');
+        .eq('role', 'vendedor');
 
       return {
         totalClientes: totalClientes || 0,
@@ -204,58 +203,59 @@ export class SupabaseService {
   }
 
   // Conversação resumida
-  static async getConversationSummaries(empresaId?: number, search?: string) {
+  static async getConversationSummaries(userId?: number, search?: string) {
     try {
-      const clientes = await this.getClientes(empresaId, search);
-      const summaries = [];
+      let query = supabase
+        .from('conversation_summaries')
+        .select('*')
+        .order('ultima_mensagem_criada_em', { ascending: false, nullsFirst: false });
 
-      for (const cliente of clientes) {
-        // Buscar última mensagem
-        const { data: ultimaMensagem } = await supabase
-          .from('Mensagens')
-          .select('*')
-          .eq('cliente_id', cliente.id)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .single();
-
-        // Contar total de mensagens
-        const { count: totalMensagens } = await supabase
-          .from('Mensagens')
-          .select('*', { count: 'exact', head: true })
-          .eq('cliente_id', cliente.id);
-
-        // Buscar análise de venda
-        const analiseVenda = await this.getAnaliseByCliente(cliente.id);
-
-        // Determinar status baseado na última atividade
-        let status: 'active' | 'pending' | 'closed' = 'pending';
-        if (ultimaMensagem) {
-          const ultimaAtividade = new Date(ultimaMensagem.created_at);
-          const agora = new Date();
-          const diferencaHoras = (agora.getTime() - ultimaAtividade.getTime()) / (1000 * 60 * 60);
-          
-          if (diferencaHoras < 24) {
-            status = 'active';
-          } else if (analiseVenda && analiseVenda.score_atendimento >= 8) {
-            status = 'closed';
-          }
-        }
-
-        summaries.push({
-          cliente,
-          ultimaMensagem,
-          totalMensagens: totalMensagens || 0,
-          analiseVenda,
-          status,
-        });
+      //FILTRO DE VENDEDOR
+      if (userId) {
+        query = query.eq('user_id', userId);
       }
 
-      return summaries.sort((a, b) => {
-        if (!a.ultimaMensagem) return 1;
-        if (!b.ultimaMensagem) return -1;
-        return new Date(b.ultimaMensagem.created_at).getTime() - new Date(a.ultimaMensagem.created_at).getTime();
-      });
+      if (search) {
+        query = query.or(`cliente_nome.ilike.%${search}%,clienteWhatsapp.ilike.%${search}%`);
+      }
+
+      const { data, error } = await query;
+      if (error) throw error;
+
+      const summaries = data.map((row: any) => ({
+        cliente: {
+          id: row.cliente_id,
+          nome: row.cliente_nome,
+          clienteWhatsapp: row.clienteWhatsapp,
+          botAtivo: row.botAtivo,
+          conversationID: row.conversationID,
+          user_id: row.user_id,
+          user: {
+            id: row.user_id,
+            name: row.user_name,
+            email: row.user_email,
+          }
+        },
+        ultimaMensagem: row.ultima_mensagem_id ? {
+          id: row.ultima_mensagem_id,
+          texto_mensagem: row.ultima_mensagem_texto,
+          remetente: row.ultima_mensagem_remetente,
+          tipo_mensagem: row.ultima_mensagem_tipo,
+          created_at: row.ultima_mensagem_criada_em,
+        } : null,
+        totalMensagens: row.total_mensagens,
+        analiseVenda: row.analise_id ? {
+          id: row.analise_id,
+          resumo_ia: row.resumo_ia,
+          pontos_melhoria: row.pontos_melhoria,
+          score_atendimento: row.score_atendimento,
+          created_at: row.analysis_created_at,
+        } : null,
+        status: 'active',
+      }));
+
+      return summaries;
+
     } catch (error) {
       console.error('Erro ao buscar resumos de conversação:', error);
       throw error;

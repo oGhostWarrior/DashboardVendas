@@ -1,4 +1,4 @@
-// Configuração da API para integração com Laravel
+//Laravel
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api';
 
 class ApiClient {
@@ -7,9 +7,20 @@ class ApiClient {
 
   constructor(baseURL: string) {
     this.baseURL = baseURL;
-    // Recupera token do localStorage se disponível
+    //token do localStorage
     if (typeof window !== 'undefined') {
       this.token = localStorage.getItem('auth_token');
+    }
+  }
+
+  setToken(token: string | null) {
+    this.token = token;
+    if (typeof window !== 'undefined') {
+      if (token) {
+        localStorage.setItem('auth_token', token);
+      } else {
+        localStorage.removeItem('auth_token');
+      }
     }
   }
 
@@ -43,30 +54,35 @@ class ApiClient {
     }
   }
 
-  // Métodos de autenticação
+  //autenticação
   async login(email: string, password: string) {
-    const response = await this.request<{ token: string; user: any }>('/auth/login', {
+    const response = await this.request<{ token: string; user: any }>('/login', {
       method: 'POST',
       body: JSON.stringify({ email, password }),
     });
     
-    this.token = response.token;
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', response.token);
-    }
+    this.setToken(response.token);
     
     return response;
   }
 
   async logout() {
-    await this.request('/auth/logout', { method: 'POST' });
-    this.token = null;
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
-    }
+    await this.request('/logout', { method: 'POST' });
+    this.setToken(null);
   }
 
-  // Métodos para conversas
+  async me() {
+    return this.request<{ user: any }>('/me');
+  }
+
+  //solicitar análise de IA
+  async requestAIAnalysis(clienteId: number) {
+    return this.request<any>(`/clientes/${clienteId}/analyze`, {
+      method: 'POST',
+    });
+  }
+
+  //conversas
   async getConversations(params?: {
     page?: number;
     per_page?: number;
@@ -102,7 +118,7 @@ class ApiClient {
     return this.request<{ data: any[] }>(`/conversations/${id}/messages`);
   }
 
-  // Métodos para análises da IA
+  // Análises da IA
   async getAIAnalysis(conversationId: string) {
     return this.request<any>(`/conversations/${conversationId}/ai-analysis`);
   }
@@ -113,7 +129,7 @@ class ApiClient {
     });
   }
 
-  // Métodos para dashboard
+  //dashboard
   async getDashboardStats(period?: string) {
     const queryParams = period ? `?period=${period}` : '';
     return this.request<{
@@ -124,7 +140,7 @@ class ApiClient {
     }>(`/dashboard/stats${queryParams}`);
   }
 
-  // Métodos para vendedores
+  //vendedores
   async getSalespeople() {
     return this.request<{ data: any[] }>('/salespeople');
   }
@@ -133,7 +149,7 @@ class ApiClient {
     return this.request<any>(`/salespeople/${id}`);
   }
 
-  // Método para atualizar status da conversa
+  //atualizar status da conversa
   async updateConversationStatus(id: string, status: string) {
     return this.request<any>(`/conversations/${id}/status`, {
       method: 'PATCH',

@@ -1,4 +1,9 @@
-// Tipos baseados no schema Supabase real
+export interface User {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export interface Empresa {
   id: number;
   created_at: string;
@@ -15,8 +20,8 @@ export interface Cliente {
   clienteWhatsapp: string;
   botAtivo: boolean;
   conversationID: string;
-  IDempresa: number;
-  empresa?: Empresa;
+  user_id: number;
+  user?: User;
 }
 
 export interface Mensagem {
@@ -40,7 +45,6 @@ export interface AnalisesVenda {
   cliente?: Cliente;
 }
 
-// Tipos para o dashboard (adaptados)
 export interface ConversationSummary {
   cliente: Cliente;
   ultimaMensagem: Mensagem;

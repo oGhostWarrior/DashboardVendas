@@ -35,7 +35,7 @@ export function useDashboardStats() {
 }
 
 // Hook para conversações
-export function useConversations(empresaId?: number, search?: string) {
+export function useConversations(userId?: number, search?: string) {
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +43,7 @@ export function useConversations(empresaId?: number, search?: string) {
   const fetchConversations = async () => {
     try {
       setLoading(true);
-      const data = await SupabaseService.getConversationSummaries(empresaId, search);
+      const data = await SupabaseService.getConversationSummaries(userId, search);
       setConversations(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao carregar conversações');
@@ -54,7 +54,7 @@ export function useConversations(empresaId?: number, search?: string) {
 
   useEffect(() => {
     fetchConversations();
-  }, [empresaId, search]);
+  }, [userId, search]);
 
   return { conversations, loading, error, refetch: fetchConversations };
 }

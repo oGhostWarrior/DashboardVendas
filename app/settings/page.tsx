@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from '@/components/Sidebar';
 import { Settings, Bell, Shield, Database, Webhook, Bot, Save } from 'lucide-react';
 
@@ -49,6 +50,7 @@ export default function SettingsPage() {
   };
 
   return (
+    <ProtectedRoute requiredRoles={['administrador']}>
     <div className="flex h-screen bg-gray-50">
       <Sidebar 
         isOpen={sidebarOpen} 
@@ -270,5 +272,6 @@ export default function SettingsPage() {
         </main>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }
