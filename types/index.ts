@@ -1,4 +1,6 @@
 export interface User {
+  role: ReactNode;
+  whatsapp_number: ReactNode;
   id: number;
   name: string;
   email: string;

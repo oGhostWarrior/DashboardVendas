@@ -74,6 +74,18 @@ class ApiClient {
   async me() {
     return this.request<{ user: any }>('/me');
   }
+  
+  //novo usuário
+  async createUser(userData: any) {
+    return this.request<any>('/users', {
+      method: 'POST',
+      body: JSON.stringify(userData),
+    });
+  }
+
+  async getUsers() {
+    return this.request<any[]>('/users');
+  }
 
   //solicitar análise de IA
   async requestAIAnalysis(clienteId: number) {
