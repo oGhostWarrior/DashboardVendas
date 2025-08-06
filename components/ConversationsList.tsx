@@ -140,7 +140,7 @@ export function ConversationsList({
                       // Se não existe, mostra o botão para solicitar uma nova
                       <button onClick={(e) => {
                           e.stopPropagation();
-                          onAnalysisRequest(conversation.cliente.id); // Chama a nova função
+                          onAnalysisRequest(conversation.cliente.id);
                         }}
                         className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
                         title="Analisar conversa com I.A">

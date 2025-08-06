@@ -8,8 +8,8 @@ import { AnaliseModal } from '@/components/AnaliseModal';
 import { ConversationModal } from '@/components/ConversationModal';
 import { ConversationSummary } from '@/types';
 import { useConversations, useAnaliseVenda } from '@/hooks/useSupabaseData';
-import { apiClient } from '@/lib/api'; // Supondo que você tenha um apiClient
-import { useToast } from "@/hooks/use-toast"; // Para dar feedback ao usuário
+import { apiClient } from '@/lib/api';
+import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function ConversationsPage() {
@@ -23,9 +23,9 @@ export default function ConversationsPage() {
 
   const { toast } = useToast();
 
-  // Hooks customizados para integração com Supabase
+  // Hooks integração com Supabase
   const { conversations, loading: conversationsLoading } = useConversations(
-    user?.role === 'vendedor' ? user.id : undefined, // Filtrar por vendedor se for vendedor
+    user?.role === 'vendedor' ? user.id : undefined,
     searchTerm
   );
 

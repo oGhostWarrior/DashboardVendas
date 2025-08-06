@@ -22,10 +22,10 @@ export default function Home() {
   const [searchTerm, setSearchTerm] = useState('');
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'pending' | 'closed'>('all');
 
-  // Hook para dados do Supabase
+  // HookSupabase
   const { toast } = useToast();
   const { conversations, loading: conversationsLoading } = useConversations(
-    user?.role === 'vendedor' ? user.id : undefined, // Filtrar por vendedor se for vendedor
+    user?.role === 'vendedor' ? user.id : undefined,
     searchTerm
   );
 

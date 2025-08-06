@@ -1,5 +1,3 @@
-// Tipos baseados no schema Supabase
-
 export interface User {
   id: number;
   name: string;
@@ -47,7 +45,6 @@ export interface AnalisesVenda {
   cliente?: Cliente;
 }
 
-// Tipos para o dashboard (adaptados)
 export interface ConversationSummary {
   cliente: Cliente;
   ultimaMensagem: Mensagem;

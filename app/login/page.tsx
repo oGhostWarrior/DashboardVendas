@@ -9,7 +9,7 @@ export default function Page() {
           <a href="#" className="flex items-center gap-2 font-medium">
             <div className="text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <Image
-                src="/icon.png"
+                src="../app/icon.png"
                 alt="Logo da Axon"
                 width={32}
                 height={32}

@@ -78,7 +78,6 @@ export interface LaravelDashboardStats {
   pending_conversations: number;
 }
 
-// Funções de transformação para converter dados Laravel para tipos locais
 export function transformConversation(laravel: LaravelConversation): import('./index').Conversation {
   return {
     id: laravel.id,

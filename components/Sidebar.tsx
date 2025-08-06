@@ -21,7 +21,7 @@ const menuItems = [
 ];
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
-  const pathname = usePathname(); // Pega a rota atual
+  const pathname = usePathname();
   const { user, logout, canAccessReports, canAccessTeam, canAccessSettings } = useAuth();
 
   return (
@@ -63,17 +63,17 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
             if (item.href === '/settings' && !canAccessSettings()) return false;
             return true;
           }).map((item) => {
-            const isActive = pathname === item.href; // Verificação dinâmica
+            const isActive = pathname === item.href;
 
             return (
-              <Link // Usando o componente Link
+              <Link
                 key={item.href}
                 href={item.href}
                 className={cn(
                   "flex items-center px-4 py-3 text-sm font-medium transition-colors",
                   isActive
-                    ? "text-orange-600 bg-orange-50 border-r-2 border-orange-600" // Estilo se estiver ativo
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50" // Estilo se não estiver ativo
+                    ? "text-orange-600 bg-orange-50 border-r-2 border-orange-600"
+                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                 )}
               >
                 <item.icon className="w-5 h-5 mr-3" />

@@ -46,7 +46,7 @@ export function useConversations(options: UseConversationsOptions = {}) {
     setError(null);
 
     try {
-      // Em desenvolvimento, usar dados mockados
+      // Em desenvolvimento, usa dados mockados
       if (process.env.NODE_ENV === 'development') {
         const mockConversations: Conversation[] = [
           {
