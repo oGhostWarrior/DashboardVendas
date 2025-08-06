@@ -5,18 +5,22 @@ class ApiClient {
   private baseURL: string;
   private token: string | null = null;
 
-  async requestAIAnalysis(clienteId: number) {
-    // Note que o ID vai na URL, não no corpo da requisição
-    return this.request<any>(`/clientes/${clienteId}/analyze`, {
-      method: 'POST',
-    });
-  }
-
   constructor(baseURL: string) {
     this.baseURL = baseURL;
     // Recupera token do localStorage se disponível
     if (typeof window !== 'undefined') {
       this.token = localStorage.getItem('auth_token');
+    }
+  }
+
+  setToken(token: string | null) {
+    this.token = token;
+    if (typeof window !== 'undefined') {
+      if (token) {
+        localStorage.setItem('auth_token', token);
+      } else {
+        localStorage.removeItem('auth_token');
+      }
     }
   }
 
@@ -57,20 +61,25 @@ class ApiClient {
       body: JSON.stringify({ email, password }),
     });
     
-    this.token = response.token;
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('auth_token', response.token);
-    }
+    this.setToken(response.token);
     
     return response;
   }
 
   async logout() {
     await this.request('/auth/logout', { method: 'POST' });
-    this.token = null;
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem('auth_token');
-    }
+    this.setToken(null);
+  }
+
+  async me() {
+    return this.request<{ user: any }>('/auth/me');
+  }
+
+  // Método para solicitar análise de IA
+  async requestAIAnalysis(clienteId: number) {
+    return this.request<any>(`/clientes/${clienteId}/analyze`, {
+      method: 'POST',
+    });
   }
 
   // Métodos para conversas

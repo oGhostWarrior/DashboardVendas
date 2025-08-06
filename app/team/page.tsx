@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from "@/components/Sidebar";
 import {
   Users,
@@ -105,6 +106,7 @@ export default function TeamPage() {
   };
 
   return (
+    <ProtectedRoute requiredRoles={['gerente', 'administrador']}>
     <div className="flex h-screen bg-gray-50">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
@@ -298,5 +300,6 @@ export default function TeamPage() {
         </main>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }

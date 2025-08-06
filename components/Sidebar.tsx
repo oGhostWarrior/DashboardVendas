@@ -1,9 +1,10 @@
 "use client";
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { Home, MessageSquare, BarChart3, Settings, Users, X } from 'lucide-react';
+import { Home, MessageSquare, BarChart3, Settings, Users, X, LogOut } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { useAuth } from '@/contexts/AuthContext';
 
 
 interface SidebarProps {
@@ -12,7 +13,7 @@ interface SidebarProps {
 }
 
 const menuItems = [
-  { icon: Home, label: 'Dashboard', href: '/'},
+  { icon: Home, label: 'Dashboard', href: '/' },
   { icon: MessageSquare, label: 'Conversas', href: '/conversations' },
   { icon: BarChart3, label: 'Relatórios', href: '/reports' },
   { icon: Users, label: 'Equipe', href: '/team' },
@@ -21,6 +22,8 @@ const menuItems = [
 
 export function Sidebar({ isOpen, onClose }: SidebarProps) {
   const pathname = usePathname(); // Pega a rota atual
+  const { user, logout, canAccessReports, canAccessTeam, canAccessSettings } = useAuth();
+
   return (
     <>
       {isOpen && (
@@ -37,7 +40,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         <div className="flex items-center justify-between p-4 border-b">
           <div className="flex items-center space-x-3">
             <Image
-              src="/Icon.png"
+              src="/icon.png"
               alt="Logo da Axon"
               width={32}
               height={32}
@@ -53,7 +56,13 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
         </div>
         
         <nav className="mt-8">
-          {menuItems.map((item) => {
+          {menuItems.filter((item) => {
+            // Filtrar itens baseado nas permissões do usuário
+            if (item.href === '/reports' && !canAccessReports()) return false;
+            if (item.href === '/team' && !canAccessTeam()) return false;
+            if (item.href === '/settings' && !canAccessSettings()) return false;
+            return true;
+          }).map((item) => {
             const isActive = pathname === item.href; // Verificação dinâmica
 
             return (
@@ -72,16 +81,26 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
               </Link>
             );
           })}
+          
+          <button
+            onClick={logout}
+            className="w-full flex items-center px-4 py-3 text-sm font-medium text-gray-600 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+          >
+            <LogOut className="w-5 h-5 mr-3" />
+            Sair
+          </button>
         </nav>
         
         <div className="absolute bottom-0 w-full p-4 border-t">
           <div className="flex items-center space-x-3">
-            <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-xs font-medium">MS</span>
+            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
+              <span className="text-white text-xs font-medium">
+                {user?.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+              </span>
             </div>
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-900 truncate">Maria Santos</p>
-              <p className="text-xs text-gray-500 truncate">Gerente</p>
+              <p className="text-sm font-medium text-gray-900 truncate">{user?.name}</p>
+              <p className="text-xs text-gray-500 truncate capitalize">{user?.role}</p>
             </div>
           </div>
         </div>

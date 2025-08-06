@@ -1,5 +1,4 @@
-import { LoginForm } from "@/components/login-form";
-import { GalleryVerticalEndIcon } from "lucide-react";
+import { LoginForm } from "@/components/LoginForm";
 import Image from "next/image";
 
 export default function Page() {
@@ -10,7 +9,7 @@ export default function Page() {
           <a href="#" className="flex items-center gap-2 font-medium">
             <div className="text-primary-foreground flex size-6 items-center justify-center rounded-md">
               <Image
-                src="/Icon.png"
+                src="/icon.png"
                 alt="Logo da Axon"
                 width={32}
                 height={32}

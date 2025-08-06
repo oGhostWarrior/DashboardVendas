@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from '@/components/Sidebar';
 import { ConversationsList } from '@/components/ConversationsList';
 import { AnaliseModal } from '@/components/AnaliseModal';
@@ -9,8 +10,10 @@ import { ConversationSummary } from '@/types';
 import { useConversations, useAnaliseVenda } from '@/hooks/useSupabaseData';
 import { apiClient } from '@/lib/api'; // Supondo que você tenha um apiClient
 import { useToast } from "@/hooks/use-toast"; // Para dar feedback ao usuário
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function ConversationsPage() {
+  const { user } = useAuth();
   const [selectedConversation, setSelectedConversation] = useState<ConversationSummary | null>(null);
   const [showAIAnalysis, setShowAIAnalysis] = useState(false);
   const [showConversationModal, setShowConversationModal] = useState(false);
@@ -21,10 +24,13 @@ export default function ConversationsPage() {
   const { toast } = useToast();
 
   // Hooks customizados para integração com Supabase
-  const { conversations, loading: conversationsLoading } = useConversations();
+  const { conversations, loading: conversationsLoading } = useConversations(
+    user?.role === 'vendedor' ? user.id : undefined, // Filtrar por vendedor se for vendedor
+    searchTerm
+  );
 
   const { analise, loading: analysisLoading } = useAnaliseVenda(
-    showAIAnalysis ? selectedConversation?.id || null : null
+    showAIAnalysis ? selectedConversation?.cliente.id || null : null
   );
 
   const handleConversationClick = (conversation: ConversationSummary) => {
@@ -57,6 +63,7 @@ export default function ConversationsPage() {
   };
 
   return (
+    <ProtectedRoute>
     <div className="flex h-screen bg-gray-50">
       <Sidebar 
         isOpen={sidebarOpen} 
@@ -76,11 +83,6 @@ export default function ConversationsPage() {
               </svg>
             </button>
             <h1 className="text-xl font-semibold text-gray-900">Conversas</h1>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">MS</span>
-            </div>
           </div>
         </header>
 
@@ -119,5 +121,6 @@ export default function ConversationsPage() {
         />
       )}
     </div>
+    </ProtectedRoute>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from 'react';
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from '@/components/Sidebar';
 import { ConversationsList } from '@/components/ConversationsList';
 import { DashboardStats } from '@/components/DashboardStats';
@@ -10,8 +11,10 @@ import { AnaliseModal } from '@/components/AnaliseModal';
 import { ConversationModal } from '@/components/ConversationModal';
 import { apiClient } from '@/lib/api'; 
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function Home() {
+  const { user } = useAuth();
   const [selectedConversation, setSelectedConversation] = useState<ConversationSummary | null>(null);
   const [showAnalise, setShowAnalise] = useState(false);
   const [showConversationModal, setShowConversationModal] = useState(false);
@@ -22,7 +25,7 @@ export default function Home() {
   // Hook para dados do Supabase
   const { toast } = useToast();
   const { conversations, loading: conversationsLoading } = useConversations(
-    undefined, // empresaId
+    user?.role === 'vendedor' ? user.id : undefined, // Filtrar por vendedor se for vendedor
     searchTerm
   );
 
@@ -56,6 +59,7 @@ export default function Home() {
   
 
   return (
+    <ProtectedRoute>
     <div className="flex h-screen bg-gray-50">
       <Sidebar 
         isOpen={sidebarOpen} 
@@ -75,11 +79,6 @@ export default function Home() {
               </svg>
             </button>
             <h1 className="text-xl font-semibold text-gray-900">Dashboard de Vendas</h1>
-          </div>
-          <div className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-full flex items-center justify-center">
-              <span className="text-white text-sm font-medium">MS</span>
-            </div>
           </div>
         </header>
 
@@ -117,5 +116,6 @@ export default function Home() {
         />
       )}
     </div>
+    </ProtectedRoute>
   );
 }

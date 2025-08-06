@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from "@/components/Sidebar";
 import {
   BarChart3,
@@ -15,6 +16,7 @@ export default function ReportsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
+    <ProtectedRoute requiredRoles={['gerente', 'administrador']}>
     <div className="flex h-screen bg-gray-50">
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
@@ -236,5 +238,6 @@ export default function ReportsPage() {
         </main>
       </div>
     </div>
+    </ProtectedRoute>
   );
 }
