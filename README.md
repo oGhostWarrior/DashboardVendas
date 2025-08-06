@@ -1,167 +1,91 @@
-# Dashboard de Vendas WhatsApp
+🚀 Funcionalidades
+•	Autenticação Baseada em Papéis: Sistema de login seguro para Vendedores, Gerentes e Administradores, cada um com suas permissões.
+•	Dashboard de Métricas: Visualização de estatísticas de performance da equipe.
+•	Gerenciamento de Conversas: Lista de conversas com busca e filtros, respeitando a visibilidade de cada usuário (vendedor vê apenas o seu, gerente/admin veem todos).
+•	Visualização de Histórico: Modal para visualização completa do histórico de mensagens de uma conversa.
+•	Análise com I.A. sob Demanda: Aciona um fluxo no N8N para analisar a qualidade do atendimento e fornecer insights, salvando o resultado no banco de dados.
+•	Gerenciamento de Equipe: Administradores podem visualizar, criar e gerenciar usuários (vendedores/gerentes) diretamente pela interface.
+•	Interface Responsiva: Design moderno e adaptável para desktop e dispositivos móveis.
+🛠️ Tecnologias Utilizadas
+•	Frontend: Next.js 13 (App Router), React, TypeScript, Tailwind CSS.
+•	Backend: Laravel 8+ (API RESTful).
+•	Banco de Dados: Supabase (PostgreSQL).
+•	Autenticação: Laravel Sanctum para autenticação de API.
+•	Automação e Integração: N8N para receber mensagens do WhatsApp (via Evolution API) e orquestrar as análises de I.A.
+•	UI Components: shadcn/ui e Lucide React para uma interface moderna e consistente.
+⚙️ Configuração e Instalação
+Pré-requisitos
+•	Node.js (v18+)
+•	PHP (v8.0+) e Composer
+•	Um projeto Supabase configurado
+•	Uma instância do N8N
 
-Sistema de gerenciamento de conversas de vendas integrado com WhatsApp, N8N e análise de IA.
+1. Backend (Laravel)
+Bash
+# Navegue até a pasta do seu backend
+cd b.api
 
-## 🚀 Funcionalidades
+# Instale as dependências do PHP
+composer install
 
-- **Dashboard Responsivo**: Interface otimizada para mobile e desktop
-- **Gerenciamento de Conversas**: Lista, filtros e busca de conversas
-- **Análise de IA**: Insights automáticos sobre conversas e clientes
-- **Integração Laravel**: Preparado para backend Laravel
-- **Real-time**: Suporte para atualizações em tempo real
+# Copie o arquivo de ambiente e configure-o
+cp .env.example .env
 
-## 🛠️ Tecnologias
+# Gere a chave da aplicação
+php artisan key:generate
 
-- **Frontend**: Next.js 13, React, TypeScript, Tailwind CSS
-- **Backend**: Preparado para Laravel (API REST)
-- **Banco de Dados**: PostgreSQL (via Laravel)
-- **Automação**: N8N para integração WhatsApp
-- **UI Components**: shadcn/ui, Lucide React
+# Execute as migrations para criar as tabelas no banco de dados
+php artisan migrate
+Importante: Configure suas credenciais do Supabase no arquivo .env do Laravel (DB_HOST, DB_PORT, DB_DATABASE, DB_USERNAME, DB_PASSWORD).
+2. Frontend (Next.js)
+Bash
+# Navegue até a pasta do frontend
+cd ../
 
-## 📦 Instalação
-
-```bash
-# Clone o repositório
-git clone <repository-url>
-
-# Instale as dependências
+# Instale as dependências do Node.js
 npm install
 
-# Configure as variáveis de ambiente
+# Copie o arquivo de ambiente
 cp .env.example .env.local
-
-# Execute o projeto
-npm run dev
-```
-
-## ⚙️ Configuração
-
-### Variáveis de Ambiente
-
-```env
-# API Configuration
+Abra o arquivo .env.local e configure as seguintes variáveis:
+Snippet de código
+# URL da sua API Laravel
 NEXT_PUBLIC_API_URL=http://localhost:8000/api
-NEXT_PUBLIC_LARAVEL_URL=http://localhost:8000
 
-# Environment
-NODE_ENV=development
-```
+# Credenciais do seu projeto Supabase (para o cliente frontend)
+NEXT_PUBLIC_SUPABASE_URL=URL_DO_SEU_PROJETO_SUPABASE
+NEXT_PUBLIC_SUPABASE_ANON_KEY=SUA_CHAVE_ANON_SUPABASE
+3. Executando o Projeto
+Bash
+# Em um terminal, inicie o servidor do Laravel
+cd b.api
+php artisan serve
 
-### Integração com Laravel
+# Em outro terminal, inicie o servidor do Next.js
+npm run dev
 
-O projeto está preparado para integração com Laravel. Estrutura esperada da API:
+🔄 Fluxo de Dados com N8N
+O N8N é o coração da integração em tempo real com o WhatsApp.
+1.	Recebimento de Mensagens: Um webhook no N8N recebe cada nova mensagem da Evolution API. O fluxo identifica o vendedor (User) pelo número de telefone, encontra ou cria o cliente (Cliente) e salva a mensagem no banco de dados Supabase, associando-a ao cliente correto.
+2.	Análise de I.A.: Quando um usuário clica em "Analisar Conversa", o frontend chama a API Laravel, que por sua vez aciona um segundo webhook no N8N. Este fluxo busca todo o histórico da conversa, envia para uma I.A. (como o Gemini) para análise e salva o resultado na tabela AnalisesVendas.
 
-#### Endpoints Principais
-
-```
-GET /api/conversations - Lista conversas
-GET /api/conversations/{id} - Detalhes da conversa
-GET /api/conversations/{id}/messages - Mensagens da conversa
-GET /api/conversations/{id}/ai-analysis - Análise da IA
-POST /api/conversations/{id}/ai-analysis - Gerar análise
-PATCH /api/conversations/{id}/status - Atualizar status
-GET /api/dashboard/stats - Estatísticas do dashboard
-```
-
-#### Estrutura do Banco (Laravel Migrations)
-
-```sql
--- Conversas
-CREATE TABLE conversations (
-    id UUID PRIMARY KEY,
-    client_name VARCHAR(255),
-    client_phone VARCHAR(20),
-    last_message TEXT,
-    last_message_at TIMESTAMP,
-    status ENUM('active', 'pending', 'closed'),
-    salesperson_id UUID,
-    messages_count INTEGER DEFAULT 0,
-    has_ai_analysis BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
-);
-
--- Mensagens
-CREATE TABLE messages (
-    id UUID PRIMARY KEY,
-    conversation_id UUID,
-    text TEXT,
-    sender_type ENUM('client', 'salesperson'),
-    sender_name VARCHAR(255),
-    whatsapp_message_id VARCHAR(255),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
-);
-
--- Análises da IA
-CREATE TABLE ai_analyses (
-    id UUID PRIMARY KEY,
-    conversation_id UUID,
-    sentiment ENUM('positive', 'neutral', 'negative'),
-    intent_probability DECIMAL(3,2),
-    key_topics JSON,
-    recommendations JSON,
-    risk_level ENUM('low', 'medium', 'high'),
-    next_actions TEXT,
-    confidence_score DECIMAL(3,2),
-    created_at TIMESTAMP,
-    updated_at TIMESTAMP
-);
-```
-
-## 🔧 Desenvolvimento
-
-### Hooks Customizados
-
-- `useConversations`: Gerencia lista de conversas
-- `useAIAnalysis`: Carrega análises da IA
-- `useDashboardStats`: Estatísticas do dashboard
-
-### Componentes Principais
-
-- `ConversationsList`: Lista de conversas com filtros
-- `AIAnalysisModal`: Modal com análise detalhada da IA
-- `ConversationModal`: Visualização de mensagens
-- `DashboardStats`: Métricas e estatísticas
-
-### Estrutura de Pastas
-
-```
-├── app/                 # Pages (App Router)
-├── components/          # Componentes React
-├── hooks/              # Hooks customizados
-├── lib/                # Utilitários e configurações
-├── types/              # Definições TypeScript
-└── public/             # Assets estáticos
-```
-
-## 🔄 Integração N8N
-
-O sistema está preparado para receber dados do N8N via webhooks Laravel:
-
-1. **Webhook de Mensagens**: Recebe mensagens do WhatsApp
-2. **Processamento IA**: Analisa conversas automaticamente
-3. **Notificações**: Atualiza dashboard em tempo real
-
-## 📱 Mobile First
-
-Interface otimizada para webview mobile:
-
-- Sidebar colapsável
-- Touch-friendly components
-- Responsive design
-- Otimização de performance
-
-## 🚀 Deploy
-
-```bash
-# Build para produção
-npm run build
-
-# Iniciar servidor
-npm start
-```
-
-## 📄 Licença
-
+🏛️ Estrutura do Projeto
+A aplicação é dividida em um backend Laravel e um frontend Next.js.
+├── app/                  # Páginas do Next.js (App Router)
+│   ├── (auth)/           # Rotas de autenticação (Login)
+│   ├── (main)/           # Rotas protegidas (Dashboard, Conversas, etc.)
+│   └── layout.tsx
+├── components/           # Componentes React
+│   ├── ui/               # Componentes do Shadcn (Button, Card, etc.)
+│   └── AddUserModal.tsx  # Componentes específicos da aplicação
+├── contexts/             # Contextos React (Ex: AuthContext)
+├── hooks/                # Hooks customizados (Ex: useTeam, useSupabaseData)
+├── lib/                  # Utilitários, API e clientes de serviços (api.ts, supabase.ts)
+├── types/                # Definições de tipos TypeScript (index.ts)
+└── b.api/                # Aplicação Backend Laravel
+    ├── app/
+    ├── database/
+    └── routes/
+📄 Licença
 Este projeto está sob a licença MIT.
+
