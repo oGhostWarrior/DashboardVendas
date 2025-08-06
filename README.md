@@ -1,4 +1,4 @@
-🚀 Funcionalidades
+🚀 Funcionalidades:
 •	Autenticação Baseada em Papéis: Sistema de login seguro para Vendedores, Gerentes e Administradores, cada um com suas permissões.
 •	Dashboard de Métricas: Visualização de estatísticas de performance da equipe.
 •	Gerenciamento de Conversas: Lista de conversas com busca e filtros, respeitando a visibilidade de cada usuário (vendedor vê apenas o seu, gerente/admin veem todos).
