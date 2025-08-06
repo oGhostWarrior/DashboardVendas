@@ -73,6 +73,7 @@ O N8N é o coração da integração em tempo real com o WhatsApp.
 
 🏛️ Estrutura do Projeto
 A aplicação é dividida em um backend Laravel e um frontend Next.js.
+
 ├── app/                  # Páginas do Next.js (App Router)
 │   ├── (auth)/           # Rotas de autenticação (Login)
 │   ├── (main)/           # Rotas protegidas (Dashboard, Conversas, etc.)
@@ -88,6 +89,6 @@ A aplicação é dividida em um backend Laravel e um frontend Next.js.
     ├── app/
     ├── database/
     └── routes/
+
 📄 Licença
 Este projeto está sob a licença MIT.
-
