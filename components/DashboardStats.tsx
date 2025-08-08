@@ -1,5 +1,5 @@
 import { useDashboardStats } from '@/hooks/useSupabaseData';
-import { MessageSquare, Users, TrendingUp, Bot, Building, UserCheck } from 'lucide-react';
+import { MessageSquare, Users, TrendingUp, Bot, Building, UserCheck, SquareUser } from 'lucide-react';
 
 export function DashboardStats() {
   const { stats, loading } = useDashboardStats();
@@ -41,9 +41,9 @@ export function DashboardStats() {
       changeType: 'positive' as const,
     },
     {
-      name: 'Empresas Ativas',
+      name: 'Vendedores Ativos',
       value: stats.empresasAtivas.toString(),
-      icon: Building,
+      icon: SquareUser,
       change: '0%',
       changeType: 'neutral' as const,
     },
