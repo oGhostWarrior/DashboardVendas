@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from '@/components/Sidebar';
-import { Settings, Bell, Shield, Database, Webhook, Bot, Save } from 'lucide-react';
+import { Settings, Bell, Shield, Database, Webhook, Save, Users, Globe } from 'lucide-react';
 
 export default function SettingsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -14,22 +14,22 @@ export default function SettingsPage() {
       lowPerformance: false,
       dailyReports: true,
     },
-    ai: {
-      autoAnalysis: true,
-      sentimentThreshold: 0.7,
-      riskAlerts: true,
-      analysisFrequency: 'realtime',
-    },
     integration: {
-      n8nWebhook: 'https://n8n.local/webhook/whatsapp',
+      n8nWebhook: 'https://sua-webhook-n8n-url.com/webhook-test/mensagens',
       laravelApi: 'http://localhost:8000/api',
-      postgresConnection: 'Connected',
+      supabaseConnection: 'Connected',
     },
     general: {
-      companyName: 'SalesChat',
+      companyName: 'Sua Empresa',
       timezone: 'America/Sao_Paulo',
       language: 'pt-BR',
-      theme: 'Dark',
+      theme: 'Light',
+      maxConversationsPerPage: 15,
+    },
+    security: {
+      sessionTimeout: 24,
+      requirePasswordChange: false,
+      loginAttempts: 5,
     },
   });
 
@@ -44,9 +44,7 @@ export default function SettingsPage() {
   };
 
   const handleSave = () => {
-    // Aqui você salvaria as configurações na API Laravel
     console.log('Salvando configurações:', settings);
-    // Mostrar toast de sucesso
   };
 
   return (
@@ -121,6 +119,35 @@ export default function SettingsPage() {
                       <option value="Europe/London">London (GMT+0)</option>
                     </select>
                   </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Idioma
+                    </label>
+                    <select
+                      value={settings.general.language}
+                      onChange={(e) => handleSettingChange('general', 'language', e.target.value)}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value="pt-BR">Português (Brasil)</option>
+                      <option value="en-US">English (US)</option>
+                      <option value="es-ES">Español</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Conversas por Página
+                    </label>
+                    <select
+                      value={settings.general.maxConversationsPerPage}
+                      onChange={(e) => handleSettingChange('general', 'maxConversationsPerPage', parseInt(e.target.value))}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value={10}>10</option>
+                      <option value={15}>15</option>
+                      <option value={25}>25</option>
+                      <option value={50}>50</option>
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
@@ -164,59 +191,61 @@ export default function SettingsPage() {
               </div>
             </div>
 
-            {/* Configurações da IA */}
+            {/* Segurança */}
             <div className="bg-white rounded-lg shadow-sm border">
               <div className="p-4 border-b">
                 <div className="flex items-center space-x-2">
-                  <Bot className="w-5 h-5 text-gray-600" />
-                  <h2 className="text-lg font-semibold text-gray-900">Inteligência Artificial</h2>
+                  <Shield className="w-5 h-5 text-gray-600" />
+                  <h2 className="text-lg font-semibold text-gray-900">Segurança</h2>
                 </div>
               </div>
               <div className="p-4 space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Timeout da Sessão (horas)
+                    </label>
+                    <select
+                      value={settings.security.sessionTimeout}
+                      onChange={(e) => handleSettingChange('security', 'sessionTimeout', parseInt(e.target.value))}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value={1}>1 hora</option>
+                      <option value={8}>8 horas</option>
+                      <option value={24}>24 horas</option>
+                      <option value={168}>7 dias</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tentativas de Login
+                    </label>
+                    <select
+                      value={settings.security.loginAttempts}
+                      onChange={(e) => handleSettingChange('security', 'loginAttempts', parseInt(e.target.value))}
+                      className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    >
+                      <option value={3}>3 tentativas</option>
+                      <option value={5}>5 tentativas</option>
+                      <option value={10}>10 tentativas</option>
+                    </select>
+                  </div>
+                </div>
+                
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-900">Análise Automática</h3>
-                    <p className="text-xs text-gray-500">Analisar conversas automaticamente</p>
+                    <h3 className="text-sm font-medium text-gray-900">Exigir Troca de Senha</h3>
+                    <p className="text-xs text-gray-500">Forçar usuários a trocar senha periodicamente</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
                       type="checkbox"
-                      checked={settings.ai.autoAnalysis}
-                      onChange={(e) => handleSettingChange('ai', 'autoAnalysis', e.target.checked)}
+                      checked={settings.security.requirePasswordChange}
+                      onChange={(e) => handleSettingChange('security', 'requirePasswordChange', e.target.checked)}
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
-                </div>
-                
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Limite de Sentimento ({settings.ai.sentimentThreshold})
-                  </label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.1"
-                    value={settings.ai.sentimentThreshold}
-                    onChange={(e) => handleSettingChange('ai', 'sentimentThreshold', parseFloat(e.target.value))}
-                    className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Frequência de Análise
-                  </label>
-                  <select
-                    value={settings.ai.analysisFrequency}
-                    onChange={(e) => handleSettingChange('ai', 'analysisFrequency', e.target.value)}
-                    className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                  >
-                    <option value="realtime">Tempo Real</option>
-                    <option value="hourly">A cada hora</option>
-                    <option value="daily">Diariamente</option>
-                  </select>
                 </div>
               </div>
             </div>
@@ -239,13 +268,13 @@ export default function SettingsPage() {
                     value={settings.integration.n8nWebhook}
                     onChange={(e) => handleSettingChange('integration', 'n8nWebhook', e.target.value)}
                     className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="https://n8n.local/webhook/whatsapp"
+                    placeholder="https://sua-webhook-n8n-url.com/webhook-test/mensagens"
                   />
                 </div>
                 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    API Laravel
+                    Backend Laravel
                   </label>
                   <input
                     type="url"
@@ -258,11 +287,11 @@ export default function SettingsPage() {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Status PostgreSQL
+                    Status Supabase
                   </label>
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-600">{settings.integration.postgresConnection}</span>
+                    <span className="text-sm text-gray-600">{settings.integration.supabaseConnection}</span>
                   </div>
                 </div>
               </div>
