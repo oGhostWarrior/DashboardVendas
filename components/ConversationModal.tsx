@@ -41,16 +41,16 @@ export function ConversationModal({ conversationSummary, onClose }: Conversation
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b bg-gray-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-opacity-50">
+      <div className="rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
+        <div className="flex items-center justify-between p-6 border-b ">
           <div className="flex items-center space-x-4">
             <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-              <User className="w-6 h-6 text-white" />
+              <User className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">{conversationSummary.cliente.nome}</h2>
-              <div className="flex items-center space-x-4 text-sm text-gray-500">
+              <h2 className="text-xl font-semibold ">{conversationSummary.cliente.nome}</h2>
+              <div className="flex items-center space-x-4 text-sm ">
                 <div className="flex items-center space-x-1">
                   <Phone className="w-4 h-4" />
                   <span>{conversationSummary.cliente.clienteWhatsapp}</span>
@@ -76,7 +76,7 @@ export function ConversationModal({ conversationSummary, onClose }: Conversation
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-200 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -86,14 +86,14 @@ export function ConversationModal({ conversationSummary, onClose }: Conversation
           {loading && (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-              <p className="text-gray-500">Carregando mensagens...</p>
+              <p className="">Carregando mensagens...</p>
             </div>
           )}
 
           {!loading && messages.length === 0 && (
             <div className="text-center py-8">
-              <MessageSquare className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <p className="text-gray-500">Nenhuma mensagem encontrada</p>
+              <MessageSquare className="w-12 h-12 mx-auto mb-4 " />
+              <p className="">Nenhuma mensagem encontrada</p>
             </div>
           )}
 
@@ -143,7 +143,7 @@ export function ConversationModal({ conversationSummary, onClose }: Conversation
           </div>
         </div>
 
-        <div className="border-t p-4 bg-gray-50">
+        <div className="border-t p-4">
           <div className="flex items-center space-x-2 text-sm text-gray-600">
             <Clock className="w-4 h-4" />
             {conversationSummary.ultimaMensagem && (

@@ -52,22 +52,22 @@ export default function TeamPage() {
 
   return (
     <ProtectedRoute requiredRoles={['gerente', 'administrador']}>
-      <div className="flex h-screen bg-gray-50">
+      <div className="flex h-screen">
         <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
         <div className="flex-1 flex flex-col overflow-hidden">
           {/* Header */}
-          <header className="bg-white shadow-sm border-b px-4 py-3 flex items-center justify-between">
+          <header className="shadow-sm border-b px-4 py-3 flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                className="md:hidden p-2 rounded-lg transition-colors"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               </button>
-              <h1 className="text-xl font-semibold text-gray-900">Equipe de Vendas</h1>
+              <h1 className="text-xl font-semibold">Equipe de Vendas</h1>
             </div>
             <div className="flex items-center space-x-4">           
               {user?.role === 'administrador' && (
@@ -77,7 +77,7 @@ export default function TeamPage() {
                 </Button>
               )}            
               <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                <span className="text-white text-sm font-medium">{getAvatarInitials(user?.name)}</span>
+                <span className="text-sm font-medium">{getAvatarInitials(user?.name)}</span>
               </div>           
             </div>
           </header>
@@ -87,51 +87,51 @@ export default function TeamPage() {
             <div className="max-w-7xl mx-auto space-y-6">
               {/* Team Overview */}
               <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-                <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className=" p-4 rounded-lg shadow-sm border">
                   <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-2 bg-blue-50 rounded-lg">
+                    <div className="p-2 rounded-lg">
                       <Users className="w-4 h-4 text-blue-600" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-gray-900">{team.length}</p>
-                  <p className="text-sm text-gray-500">Total de Membros</p>
+                  <p className="text-2xl font-bold">{team.length}</p>
+                  <p className="text-sm ">Total de Membros</p>
                 </div>
 
-                <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className=" p-4 rounded-lg shadow-sm border">
                   <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-2 bg-green-50 rounded-lg">
+                    <div className="p-2 rounded-lg">
                       <TrendingUp className="w-4 h-4 text-green-600" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-gray-900">68%</p>
-                  <p className="text-sm text-gray-500">Taxa Média</p>
+                  <p className="text-2xl font-bold">68%</p>
+                  <p className="text-sm">Taxa Média</p>
                 </div>
 
-                <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className="p-4 rounded-lg shadow-sm border">
                   <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-2 bg-purple-50 rounded-lg">
+                    <div className="p-2 rounded-lg">
                       <MessageSquare className="w-4 h-4 text-purple-600" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-gray-900">41</p>
-                  <p className="text-sm text-gray-500">Conversas Hoje</p>
+                  <p className="text-2xl font-bold">41</p>
+                  <p className="text-sm">Conversas Hoje</p>
                 </div>
 
-                <div className="bg-white p-4 rounded-lg shadow-sm border">
+                <div className="p-4 rounded-lg shadow-sm border">
                   <div className="flex items-center space-x-2 mb-2">
-                    <div className="p-2 bg-orange-50 rounded-lg">
+                    <div className="p-2 rounded-lg">
                       <Award className="w-4 h-4 text-yellow-600" />
                     </div>
                   </div>
-                  <p className="text-2xl font-bold text-gray-900">R$ 123k</p>
-                  <p className="text-sm text-gray-500">Vendas do Mês</p>
+                  <p className="text-2xl font-bold">R$ 123k</p>
+                  <p className="text-sm">Vendas do Mês</p>
                 </div>
               </div>
 
               {/* Team Members */}
-              <div className="bg-white rounded-lg shadow-sm border">
+              <div className="rounded-lg shadow-sm border">
                 <div className="p-4 border-b">
-                  <h2 className="text-lg font-semibold text-gray-900">
+                  <h2 className="text-lg font-semibold">
                     Membros da Equipe
                   </h2>
                 </div>
@@ -152,18 +152,18 @@ export default function TeamPage() {
                   ) : (
                     // Lista de membros da equipe com dados reais
                     team.map((member) => (
-                      <div key={member.id} className="p-4 hover:bg-gray-50 transition-colors">
+                      <div key={member.id} className="p-4 transition-colors">
                         <div className="flex items-start space-x-4">
                           <div className="relative">
                             <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
-                              <span className="text-white font-medium">{getAvatarInitials(member.name)}</span>
+                              <span className="font-medium">{getAvatarInitials(member.name)}</span>
                             </div>
                             <div className={`absolute -bottom-1 -right-1 w-4 h-4 rounded-full border-2 border-white ${getStatusColor('online')}`}></div>
                           </div>
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-medium text-gray-900">{member.name}</h3>
-                            <p className="text-sm text-gray-600 mb-2 capitalize">{member.role}</p>
-                            <div className="flex items-center space-x-4 text-sm text-gray-500">
+                            <h3 className="font-medium">{member.name}</h3>
+                            <p className="text-sm mb-2 capitalize">{member.role}</p>
+                            <div className="flex items-center space-x-4 text-sm">
                               <div className="flex items-center space-x-1">
                                 <Mail className="w-4 h-4" />
                                 <span className="hidden sm:inline">{member.email}</span>

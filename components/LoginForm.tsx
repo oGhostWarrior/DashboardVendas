@@ -36,7 +36,7 @@ export function LoginForm() {
   return (
     <Card className="w-full">
       <CardHeader>
-        <CardTitle className="text-2xl">Login</CardTitle>
+        <CardTitle className="text-2xl text-orange-500">Login</CardTitle>
         <CardDescription>
           Digite suas credenciais para acessar o sistema
         </CardDescription>
@@ -81,7 +81,7 @@ export function LoginForm() {
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
                 disabled={loading}
               >
-                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                {showPassword ? <EyeOff className="w-4 h-4 text-gray-400" /> : <Eye className="w-4 h-4 text-orange-500" />}
               </button>
             </div>
           </div>

@@ -10,19 +10,19 @@ export default function UnauthorizedPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8 text-center">
+    <div className="min-h-screen flex items-center justify-center">
+      <div className="max-w-md w-full  rounded-lg shadow-lg p-8 text-center">
         <div className="flex justify-center mb-4">
-          <div className="p-3 bg-red-100 rounded-full">
+          <div className="p-3 rounded-full">
             <AlertTriangle className="w-8 h-8 text-red-600" />
           </div>
         </div>
         
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold  mb-2">
           Acesso Negado
         </h1>
         
-        <p className="text-gray-600 mb-6">
+        <p className="mb-6">
           Você não tem permissão para acessar esta página.
           {user && (
             <span className="block mt-2 text-sm">

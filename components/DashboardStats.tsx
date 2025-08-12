@@ -53,10 +53,10 @@ export function DashboardStats() {
     return (
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="bg-white p-4 rounded-lg shadow-sm border animate-pulse">
-            <div className="h-4 bg-gray-200 rounded mb-2"></div>
-            <div className="h-8 bg-gray-200 rounded mb-2"></div>
-            <div className="h-3 bg-gray-200 rounded"></div>
+          <div key={i} className="p-4 rounded-lg shadow-sm border animate-pulse">
+            <div className="h-4 rounded mb-2"></div>
+            <div className="h-8 rounded mb-2"></div>
+            <div className="h-3 rounded"></div>
           </div>
         ))}
       </div>
@@ -66,10 +66,10 @@ export function DashboardStats() {
   return (
     <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
       {statsConfig.map((stat) => (
-        <div key={stat.name} className="bg-white p-4 rounded-lg shadow-sm border">
+        <div key={stat.name} className="p-4 rounded-lg shadow-sm border">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="p-2 bg-orange-50 rounded-lg">
+              <div className="p-2 rounded-lg">
                 <stat.icon className="w-4 h-4 text-orange-600" />
               </div>
             </div>
@@ -80,8 +80,8 @@ export function DashboardStats() {
             </span>
           </div>
           <div className="mt-2">
-            <p className="text-2xl font-bold text-gray-900">{stat.value}</p>
-            <p className="text-sm text-gray-500">{stat.name}</p>
+            <p className="text-2xl font-bold">{stat.value}</p>
+            <p className="text-sm ">{stat.name}</p>
           </div>
         </div>
       ))}

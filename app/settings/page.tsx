@@ -49,7 +49,7 @@ export default function SettingsPage() {
 
   return (
     <ProtectedRoute requiredRoles={['administrador']}>
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen ">
       <Sidebar 
         isOpen={sidebarOpen} 
         onClose={() => setSidebarOpen(false)} 
@@ -57,22 +57,22 @@ export default function SettingsPage() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="bg-white shadow-sm border-b px-4 py-3 flex items-center justify-between">
+        <header className="shadow-sm border-b px-4 py-3 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
               onClick={() => setSidebarOpen(true)}
-              className="md:hidden p-2 rounded-lg hover:bg-gray-100 transition-colors"
+              className="md:hidden p-2 rounded-lg transition-colors"
             >
               <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <h1 className="text-xl font-semibold text-gray-900">Configurações</h1>
+            <h1 className="text-xl font-semibold ">Configurações</h1>
           </div>
           <div className="flex items-center space-x-2">
             <button 
               onClick={handleSave}
-              className="flex items-center space-x-2 px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="flex items-center space-x-2 px-3 py-2 bg-blue-600 rounded-lg hover:bg-blue-700 transition-colors"
             >
               <Save className="w-4 h-4" />
               <span className="hidden sm:inline">Salvar</span>
@@ -85,17 +85,17 @@ export default function SettingsPage() {
           <div className="max-w-4xl mx-auto space-y-6">
             
             {/* Configurações Gerais */}
-            <div className="bg-white rounded-lg shadow-sm border">
+            <div className="rounded-lg shadow-sm border">
               <div className="p-4 border-b">
                 <div className="flex items-center space-x-2">
-                  <Settings className="w-5 h-5 text-gray-600" />
-                  <h2 className="text-lg font-semibold text-gray-900">Configurações Gerais</h2>
+                  <Settings className="w-5 h-5" />
+                  <h2 className="text-lg font-semibold">Configurações Gerais</h2>
                 </div>
               </div>
               <div className="p-4 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium mb-1">
                       Nome da Empresa
                     </label>
                     <input
@@ -106,7 +106,7 @@ export default function SettingsPage() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium mb-1">
                       Fuso Horário
                     </label>
                     <select
@@ -120,7 +120,7 @@ export default function SettingsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium mb-1">
                       Idioma
                     </label>
                     <select
@@ -134,7 +134,7 @@ export default function SettingsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium mb-1">
                       Conversas por Página
                     </label>
                     <select
@@ -153,24 +153,24 @@ export default function SettingsPage() {
             </div>
 
             {/* Notificações */}
-            <div className="bg-white rounded-lg shadow-sm border">
+            <div className="rounded-lg shadow-sm border">
               <div className="p-4 border-b">
                 <div className="flex items-center space-x-2">
-                  <Bell className="w-5 h-5 text-gray-600" />
-                  <h2 className="text-lg font-semibold text-gray-900">Notificações</h2>
+                  <Bell className="w-5 h-5" />
+                  <h2 className="text-lg font-semibold">Notificações</h2>
                 </div>
               </div>
               <div className="p-4 space-y-4">
                 {Object.entries(settings.notifications).map(([key, value]) => (
                   <div key={key} className="flex items-center justify-between">
                     <div>
-                      <h3 className="text-sm font-medium text-gray-900">
+                      <h3 className="text-sm font-medium">
                         {key === 'newConversations' && 'Novas Conversas'}
                         {key === 'aiAnalysis' && 'Análises da IA'}
                         {key === 'lowPerformance' && 'Baixa Performance'}
                         {key === 'dailyReports' && 'Relatórios Diários'}
                       </h3>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs ">
                         {key === 'newConversations' && 'Receber notificações de novas conversas'}
                         {key === 'aiAnalysis' && 'Notificar quando análises estiverem prontas'}
                         {key === 'lowPerformance' && 'Alertas de performance baixa'}
@@ -184,7 +184,7 @@ export default function SettingsPage() {
                         onChange={(e) => handleSettingChange('notifications', key, e.target.checked)}
                         className="sr-only peer"
                       />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                      <div className="w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                     </label>
                   </div>
                 ))}
@@ -192,17 +192,17 @@ export default function SettingsPage() {
             </div>
 
             {/* Segurança */}
-            <div className="bg-white rounded-lg shadow-sm border">
+            <div className="rounded-lg shadow-sm border">
               <div className="p-4 border-b">
                 <div className="flex items-center space-x-2">
-                  <Shield className="w-5 h-5 text-gray-600" />
-                  <h2 className="text-lg font-semibold text-gray-900">Segurança</h2>
+                  <Shield className="w-5 h-5" />
+                  <h2 className="text-lg font-semibold ">Segurança</h2>
                 </div>
               </div>
               <div className="p-4 space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium mb-1">
                       Timeout da Sessão (horas)
                     </label>
                     <select
@@ -217,7 +217,7 @@ export default function SettingsPage() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium mb-1">
                       Tentativas de Login
                     </label>
                     <select
@@ -234,8 +234,8 @@ export default function SettingsPage() {
                 
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="text-sm font-medium text-gray-900">Exigir Troca de Senha</h3>
-                    <p className="text-xs text-gray-500">Forçar usuários a trocar senha periodicamente</p>
+                    <h3 className="text-sm font-medium">Exigir Troca de Senha</h3>
+                    <p className="text-xs">Forçar usuários a trocar senha periodicamente</p>
                   </div>
                   <label className="relative inline-flex items-center cursor-pointer">
                     <input
@@ -244,23 +244,23 @@ export default function SettingsPage() {
                       onChange={(e) => handleSettingChange('security', 'requirePasswordChange', e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                    <div className="w-11 h-6 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                   </label>
                 </div>
               </div>
             </div>
 
             {/* Integrações */}
-            <div className="bg-white rounded-lg shadow-sm border">
+            <div className="rounded-lg shadow-sm border">
               <div className="p-4 border-b">
                 <div className="flex items-center space-x-2">
-                  <Webhook className="w-5 h-5 text-gray-600" />
-                  <h2 className="text-lg font-semibold text-gray-900">Integrações</h2>
+                  <Webhook className="w-5 h-5" />
+                  <h2 className="text-lg font-semibold">Integrações</h2>
                 </div>
               </div>
               <div className="p-4 space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Webhook N8N
                   </label>
                   <input
@@ -273,7 +273,7 @@ export default function SettingsPage() {
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Backend Laravel
                   </label>
                   <input
@@ -286,12 +286,12 @@ export default function SettingsPage() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
+                  <label className="block text-sm font-medium mb-1">
                     Status Supabase
                   </label>
                   <div className="flex items-center space-x-2">
                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                    <span className="text-sm text-gray-600">{settings.integration.supabaseConnection}</span>
+                    <span className="text-sm">{settings.integration.supabaseConnection}</span>
                   </div>
                 </div>
               </div>

@@ -26,21 +26,21 @@ export function AnaliseModal({ conversationSummary, onClose }: AnaliseModalProps
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 b bg-opacity-50">
+      <div className="rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center space-x-3">
-            <div className="p-2 bg-blue-50 rounded-lg">
+            <div className="p-2 rounded-lg">
               <Bot className="w-6 h-6 text-blue-600" />
             </div>
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Análise de Vendas</h2>
-              <p className="text-sm text-gray-500">{conversationSummary.cliente.nome}</p>
+              <p className="text-sm ">{conversationSummary.cliente.nome}</p>
             </div>
           </div>
           <button
             onClick={onClose}
-            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -50,23 +50,23 @@ export function AnaliseModal({ conversationSummary, onClose }: AnaliseModalProps
           {loading && (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-              <p className="text-gray-500">Carregando análise...</p>
+              <p className="">Carregando análise...</p>
             </div>
           )}
 
           {!loading && !analise && (
             <div className="text-center py-8">
-              <Bot className="w-12 h-12 mx-auto mb-4 text-gray-300" />
-              <p className="text-gray-500">Análise não disponível para este cliente</p>
+              <Bot className="w-12 h-12 mx-auto mb-4 " />
+              <p className="">Análise não disponível para este cliente</p>
             </div>
           )}
 
           {!loading && analise && (
             <>
               {/* Score de Atendimento */}
-              <div className="bg-gray-50 p-4 rounded-lg">
+              <div className=" p-4 rounded-lg">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-sm font-medium text-gray-600">Score de Atendimento</span>
+                  <span className="text-sm font-medium ">Score de Atendimento</span>
                   <div className="flex items-center space-x-2">
                     <TrendingUp className="w-4 h-4 text-blue-600" />
                     <span className={`px-3 py-1 text-sm font-bold rounded-full ${getScoreColor(analise.score_atendimento)}`}>
@@ -74,7 +74,7 @@ export function AnaliseModal({ conversationSummary, onClose }: AnaliseModalProps
                     </span>
                   </div>
                 </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
+                <div className="w-full rounded-full h-2">
                   <div 
                     className="bg-blue-600 h-2 rounded-full transition-all duration-300"
                     style={{ width: `${(analise.score_atendimento / 10) * 100}%` }}
@@ -84,20 +84,20 @@ export function AnaliseModal({ conversationSummary, onClose }: AnaliseModalProps
 
               {/* Resumo da IA */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Resumo da Conversa</h3>
-                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h3 className="text-lg font-semibold  mb-3">Resumo da Conversa</h3>
+                <div className=" border border-blue-200 rounded-lg p-4">
                   <p className="text-sm text-blue-800">{analise.resumo_ia}</p>
                 </div>
               </div>
 
               {/* Pontos de Melhoria */}
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Pontos de Melhoria</h3>
+                <h3 className="text-lg font-semibold  mb-3">Pontos de Melhoria</h3>
                 <div className="space-y-2">
                   {analise.pontos_melhoria.map((ponto, index) => (
                     <div key={index} className="flex items-start space-x-3">
                       <AlertTriangle className="w-5 h-5 text-yellow-500 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-gray-700">{ponto}</p>
+                      <p className="text-sm ">{ponto}</p>
                     </div>
                   ))}
                 </div>
@@ -105,28 +105,28 @@ export function AnaliseModal({ conversationSummary, onClose }: AnaliseModalProps
 
               {/* Informações do Cliente */}
               <div className="border-t pt-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Informações do Cliente</h3>
+                <h3 className="text-lg font-semibold mb-3">Informações do Cliente</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="flex items-center space-x-3">
-                    <User className="w-5 h-5 text-gray-400" />
+                    <User className="w-5 h-5" />
                     <div>
-                      <p className="text-sm font-medium text-gray-900">{conversationSummary.cliente.nome}</p>
-                      <p className="text-xs text-gray-500">{conversationSummary.cliente.clienteWhatsapp}</p>
+                      <p className="text-sm font-medium ">{conversationSummary.cliente.nome}</p>
+                      <p className="text-xs ">{conversationSummary.cliente.clienteWhatsapp}</p>
                     </div>
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Total de Mensagens</p>
-                    <p className="text-xs text-gray-500">{conversationSummary.totalMensagens} mensagens</p>
+                    <p className="text-sm font-medium ">Total de Mensagens</p>
+                    <p className="text-xs ">{conversationSummary.totalMensagens} mensagens</p>
                   </div>
                   {conversationSummary.cliente.user && (
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Empresa</p>
-                      <p className="text-xs text-gray-500">{conversationSummary.cliente.user.name}</p>
+                      <p className="text-sm font-medium ">Empresa</p>
+                      <p className="text-xs ">{conversationSummary.cliente.user.name}</p>
                     </div>
                   )}
                   <div>
-                    <p className="text-sm font-medium text-gray-900">Bot Ativo</p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-sm font-medium ">Bot Ativo</p>
+                    <p className="text-xs ">
                       {conversationSummary.cliente.botAtivo ? 'Sim' : 'Não'}
                     </p>
                   </div>
@@ -135,7 +135,7 @@ export function AnaliseModal({ conversationSummary, onClose }: AnaliseModalProps
 
               {/* Informações da análise */}
               <div className="pt-4 border-t">
-                <p className="text-xs text-gray-500">
+                <p className="text-xs ">
                   Análise gerada em {new Date(analise.created_at).toLocaleString('pt-BR')}
                 </p>
               </div>
