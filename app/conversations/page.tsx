@@ -29,10 +29,6 @@ export default function ConversationsPage() {
     searchTerm
   );
 
-  const { analise, loading: analysisLoading } = useAnaliseVenda(
-    showAIAnalysis ? selectedConversation?.cliente.id || null : null
-  );
-
   const handleConversationClick = (conversation: ConversationSummary) => {
     setSelectedConversation(conversation);
     setShowConversationModal(true);
@@ -108,8 +104,6 @@ export default function ConversationsPage() {
       {showAIAnalysis && selectedConversation && (
         <AnaliseModal
           conversationSummary={selectedConversation}
-          analise={analise}
-          loading={analysisLoading}
           onClose={() => setShowAIAnalysis(false)}
         />
       )}
