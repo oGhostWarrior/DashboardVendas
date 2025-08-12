@@ -203,7 +203,7 @@ export class SupabaseService {
   }
 
   // Conversação resumida
-  static async getConversationSummaries(userId?: number, search?: string) {
+  static async getConversationSummaries(userId?: number, search?: string): Promise<any[]> {
     try {
       let query = supabase
         .from('conversation_summaries')
