@@ -71,9 +71,11 @@ O N8N é o coração da integração em tempo real com o WhatsApp.
 1.	Recebimento de Mensagens: Um webhook no N8N recebe cada nova mensagem da Evolution API. O fluxo identifica o vendedor (User) pelo número de telefone, encontra ou cria o cliente (Cliente) e salva a mensagem no banco de dados Supabase, associando-a ao cliente correto.
 2.	Análise de I.A.: Quando um usuário clica em "Analisar Conversa", o frontend chama a API Laravel, que por sua vez aciona um segundo webhook no N8N. Este fluxo busca todo o histórico da conversa, envia para uma I.A. (como o Gemini) para análise e salva o resultado na tabela AnalisesVendas.
 
-🏛️ Estrutura do Projeto
+## 🏛️ Estrutura do Projeto
+
 A aplicação é dividida em um backend Laravel e um frontend Next.js.
 
+```
 ├── app/                  # Páginas do Next.js (App Router)
 │   ├── (auth)/           # Rotas de autenticação (Login)
 │   ├── (main)/           # Rotas protegidas (Dashboard, Conversas, etc.)
@@ -89,6 +91,11 @@ A aplicação é dividida em um backend Laravel e um frontend Next.js.
     ├── app/
     ├── database/
     └── routes/
+```
 
-📄 Licença
+## 📄 Licença
+
 Este projeto está sob a licença MIT.
+
+```
+```
