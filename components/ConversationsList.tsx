@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
-import { Search, Bot, MessageSquare, Clock, Phone, User } from 'lucide-react';
-import { ConversationSummary } from '@/types';
-import { cn } from '@/lib/utils';
+import { useState } from "react";
+import { Search, Bot, MessageSquare, Clock, Phone, User } from "lucide-react";
+import { ConversationSummary } from "@/types";
+import { cn } from "@/lib/utils";
 
 interface ConversationsListProps {
   conversations: ConversationSummary[];
@@ -12,16 +12,18 @@ interface ConversationsListProps {
   onAIAnalysisClick: (conversation: ConversationSummary) => void;
   searchTerm: string;
   onSearchChange: (search: string) => void;
-  statusFilter: 'all' | 'active' | 'pending' | 'closed';
-  onStatusFilterChange: (status: 'all' | 'active' | 'pending' | 'closed') => void;
+  statusFilter: "all" | "active" | "pending" | "closed";
+  onStatusFilterChange: (
+    status: "all" | "active" | "pending" | "closed"
+  ) => void;
 
   onAnalysisRequest: (clienteId: number) => void;
 }
 
-export function ConversationsList({ 
-  conversations, 
+export function ConversationsList({
+  conversations,
   loading = false,
-  onConversationClick, 
+  onConversationClick,
   onAIAnalysisClick,
   onAnalysisRequest,
   searchTerm,
@@ -29,28 +31,35 @@ export function ConversationsList({
   statusFilter,
   onStatusFilterChange,
 }: ConversationsListProps) {
-
   // Filtrar conversações por status
-  const filteredConversations = conversations.filter(conv => {
-    if (statusFilter === 'all') return true;
+  const filteredConversations = conversations.filter((conv) => {
+    if (statusFilter === "all") return true;
     return conv.status === statusFilter;
   });
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'pending': return 'bg-yellow-100 text-yellow-800';
-      case 'closed': return 'bg-blue-100 text-blue-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "active":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "closed":
+        return "bg-blue-100 text-blue-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getStatusText = (status: string) => {
     switch (status) {
-      case 'active': return 'Ativo';
-      case 'pending': return 'Pendente';
-      case 'closed': return 'Fechado';
-      default: return 'Desconhecido';
+      case "active":
+        return "Ativo";
+      case "pending":
+        return "Pendente";
+      case "closed":
+        return "Fechado";
+      default:
+        return "Desconhecido";
     }
   };
 
@@ -62,7 +71,7 @@ export function ConversationsList({
     const minutes = Math.floor(diff / (1000 * 60));
 
     if (hours > 24) {
-      return date.toLocaleDateString('pt-BR');
+      return date.toLocaleDateString("pt-BR");
     } else if (hours > 0) {
       return `${hours}h atrás`;
     } else {
@@ -71,35 +80,38 @@ export function ConversationsList({
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 8) return 'text-green-600 bg-green-50';
-    if (score >= 6) return 'text-yellow-600 bg-yellow-50';
-    return 'text-red-600 bg-red-50';
+    if (score >= 8) return "text-green-600 bg-green-50";
+    if (score >= 6) return "text-yellow-600 bg-yellow-50";
+    return "text-red-600 bg-red-50";
   };
 
   return (
-    <div className="rounded-lg shadow-sm border">
-      <div className="p-4 border-b">
+    <div className="rounded-lg shadow-sm">
+      <div className="p-4">
         <div className="flex flex-col space-y-4 md:flex-row md:items-center md:justify-between md:space-y-0">
           <h2 className="text-lg font-semibold ">Conversas Recentes</h2>
-          
-          <div className="flex flex-col space-y-2 md:flex-row md:items-center md:space-y-0 md:space-x-4">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4" />
+
+          <div className="flex items-center gap-2">
+            {/* Adicionado 'flex-1' para que o campo de busca ocupe o espaço disponível */}
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
                 type="text"
                 placeholder="Buscar cliente..."
                 value={searchTerm}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="pl-10 pr-4 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm w-full md:w-64"
+                // A classe 'w-full' agora faz o input preencher seu container pai (que tem flex-1).
+                // As classes de largura específicas como md:w-64 foram removidas para dar lugar ao flex-1.
+                className="pl-10 pr-4 py-2 border bg-gray-100 dark:bg-gray-900 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm w-full"
               />
             </div>
-            
+
             <select
               value={statusFilter}
               onChange={(e) => onStatusFilterChange(e.target.value as any)}
-              className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+              className="px-3 py-2 border rounded-lg bg-gray-100 dark:bg-gray-900 focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
             >
-              <option value="all">Todos os Status</option>
+              <option value="all">Todos</option>
               <option value="active">Ativo</option>
               <option value="pending">Pendente</option>
               <option value="closed">Fechado</option>
@@ -108,70 +120,82 @@ export function ConversationsList({
         </div>
       </div>
 
-      <div className="divide-y">
+      <div className="">
         {loading && (
           <div className="p-8 text-center">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto mb-4"></div>
             <p className="">Carregando conversas...</p>
           </div>
         )}
-        
+
         {filteredConversations.map((conversation) => (
           <div
             key={conversation.cliente.id}
-            className="p-4 transition-colors cursor-pointer"
+            className="p-4 transition-colors cursor-pointer border mb-4 rounded-lg"
             onClick={() => onConversationClick(conversation)}
           >
             <div className="flex items-start justify-between">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center space-x-2 mb-1">
-
                   {conversation.analiseVenda ? (
                     // Se já existe análise, mostra o botão para visualizá-la
-                    <button onClick={(e) => {
+                    <button
+                      onClick={(e) => {
                         e.stopPropagation();
                         onAIAnalysisClick(conversation);
                       }}
                       className="p-2 text-blue-600 rounded-lg transition-colors"
-                      title="Ver análise da IA">
+                      title="Ver análise da IA"
+                    >
                       <Bot className="w-4 h-4" />
                     </button>
                   ) : (
-                      // Se não existe, mostra o botão para solicitar uma nova
-                      <button onClick={(e) => {
-                          e.stopPropagation();
-                          onAnalysisRequest(conversation.cliente.id);
-                        }}
-                        className="p-2 text-purple-600 rounded-lg transition-colors"
-                        title="Analisar conversa com I.A">
-                        <Bot className="w-4 h-4" />
-                      </button>
-                    )}
-                    
+                    // Se não existe, mostra o botão para solicitar uma nova
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onAnalysisRequest(conversation.cliente.id);
+                      }}
+                      className="p-2 text-purple-600 rounded-lg transition-colors"
+                      title="Analisar conversa com I.A"
+                    >
+                      <Bot className="w-4 h-4" />
+                    </button>
+                  )}
+
                   <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
                     <User className="w-5 h-5" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center space-x-2">
-                      <h3 className="font-medium truncate">{conversation.cliente.nome}</h3>
-                      <span className={cn(
-                        "px-2 py-1 text-xs font-medium rounded-full",
-                        getStatusColor(conversation.status)
-                      )}>
+                      <h3 className="font-medium truncate">
+                        {conversation.cliente.nome}
+                      </h3>
+                      <span
+                        className={cn(
+                          "px-2 py-1 text-xs font-medium rounded-full",
+                          getStatusColor(conversation.status)
+                        )}
+                      >
                         {getStatusText(conversation.status)}
                       </span>
                       {conversation.analiseVenda && (
-                        <span className={cn(
-                          "px-2 py-1 text-xs font-medium rounded-full",
-                          getScoreColor(conversation.analiseVenda.score_atendimento)
-                        )}>
-                          Score: {conversation.analiseVenda.score_atendimento}/10
+                        <span
+                          className={cn(
+                            "px-2 py-1 text-xs font-medium rounded-full",
+                            getScoreColor(
+                              conversation.analiseVenda.score_atendimento
+                            )
+                          )}
+                        >
+                          Score: {conversation.analiseVenda.score_atendimento}
+                          /10
                         </span>
                       )}
                     </div>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-4 text-sm mb-2 ml-12">
                   <div className="flex items-center space-x-1">
                     <Phone className="w-4 h-4" />
@@ -187,19 +211,27 @@ export function ConversationsList({
                     </span>
                   )}
                 </div>
-                
+
                 {conversation.ultimaMensagem && (
                   <>
                     <p className="text-smtruncate mb-2 ml-12">
                       <span className="font-medium">
-                        {conversation.ultimaMensagem.remetente === 'CLIENTE' ? 'Cliente' : 'Empresa'}:
-                      </span> {conversation.ultimaMensagem.texto_mensagem}
+                        {conversation.ultimaMensagem.remetente === "CLIENTE"
+                          ? "Cliente"
+                          : "Empresa"}
+                        :
+                      </span>{" "}
+                      {conversation.ultimaMensagem.texto_mensagem}
                     </p>
-                    
+
                     <div className="flex items-center justify-between ml-12">
                       <div className="flex items-center space-x-1 text-xs ">
                         <Clock className="w-3 h-3" />
-                        <span>{formatTimestamp(conversation.ultimaMensagem.created_at)}</span>
+                        <span>
+                          {formatTimestamp(
+                            conversation.ultimaMensagem.created_at
+                          )}
+                        </span>
                       </div>
                       <span className="text-xs ">
                         {conversation.ultimaMensagem.tipo_mensagem}
@@ -208,7 +240,7 @@ export function ConversationsList({
                   </>
                 )}
               </div>
-              
+
               <div className="flex items-center space-x-2 ml-4">
                 {conversation.analiseVenda && (
                   <button
@@ -227,7 +259,7 @@ export function ConversationsList({
           </div>
         ))}
       </div>
-      
+
       {!loading && filteredConversations.length === 0 && (
         <div className="p-8 text-center ">
           <MessageSquare className="w-12 h-12 mx-auto mb-4" />

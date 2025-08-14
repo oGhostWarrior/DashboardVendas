@@ -41,7 +41,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
 
       <div
         className={cn(
-          "fixed left-0 top-0 h-full bg-theme w-64 border-r rounded-xl shadow-lg z-50 transform transition-transform duration-300 md:relative md:translate-x-0",
+          "fixed left-0 top-0 h-full w-64 bg-white dark:bg-gray-900 border-r rounded-xl shadow-lg z-50 transform transition-transform duration-300 md:relative md:translate-x-0",
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
@@ -76,7 +76,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                     {
                       "text-orange-600 border-r-2 border-orange-600": isActive,
 
-                      "text-gray-300  hover:text-black dark:text-gray-00 dark:hover:text-gray-200":
+                      "text-gray-500  hover:text-black dark:text-gray-400 dark:hover:text-gray-200":
                         !isActive,
                     }
                   )}

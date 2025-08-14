@@ -68,7 +68,7 @@ export default function Home() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className=" shadow-sm border-b px-4 py-3 flex items-center justify-between">
+        <header className="px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
               onClick={() => setSidebarOpen(true)}
@@ -78,7 +78,7 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
-            <h1 className="text-xl font-semibold ">Dashboard de Vendas</h1>
+            <h1 className="text-xl font-semibold items-center">Dashboard de Vendas</h1>
           </div>
         </header>
 
