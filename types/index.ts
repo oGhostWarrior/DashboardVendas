@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface User {
   role: ReactNode;
   whatsapp_number: ReactNode;
@@ -65,6 +67,7 @@ export interface DashboardStats {
 }
 
 export interface Conversation {
+  clientName: ReactNode;
   cliente: Cliente;
   ultimaMensagem: Mensagem;
   totalMensagens: number;

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { SupabaseService } from '@/lib/supabase';
 import { ConversationSummary, DashboardStats, Mensagem, AnalisesVenda } from '@/types';
 
-// Hook para estatísticas do dashboard
 export function useDashboardStats() {
   const [stats, setStats] = useState<DashboardStats>({
     totalClientes: 0,
@@ -35,7 +34,7 @@ export function useDashboardStats() {
 }
 
 // Hook para conversações
-export function useConversations(userId?: number, search?: string) {
+export function useConversations(userId?: number, search?: string, authLoading?: boolean) {
   const [conversations, setConversations] = useState<ConversationSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,8 +52,10 @@ export function useConversations(userId?: number, search?: string) {
   };
 
   useEffect(() => {
-    fetchConversations();
-  }, [userId, search]);
+    if (!authLoading) {
+      fetchConversations();
+    }
+  }, [userId, search, authLoading]);
 
   return { conversations, loading, error, refetch: fetchConversations };
 }
