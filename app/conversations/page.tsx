@@ -68,7 +68,7 @@ export default function ConversationsPage() {
       
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Header */}
-        <header className="shadow-sm border-b px-4 py-3 flex items-center justify-between">
+        <header className="shadow-sm px-4 py-4 flex items-center justify-between">
           <div className="flex items-center space-x-3">
             <button
               onClick={() => setSidebarOpen(true)}

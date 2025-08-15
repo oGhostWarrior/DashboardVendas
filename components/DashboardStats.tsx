@@ -53,7 +53,7 @@ export function DashboardStats() {
     return (
       <div className="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-6">
         {[1, 2, 3, 4, 5, 6].map((i) => (
-          <div key={i} className="p-4 rounded-lg shadow-sm border animate-pulse">
+          <div key={i} className="p-4 rounded-lg shadow-xl border animate-pulse">
             <div className="h-4 rounded mb-2"></div>
             <div className="h-8 rounded mb-2"></div>
             <div className="h-3 rounded"></div>

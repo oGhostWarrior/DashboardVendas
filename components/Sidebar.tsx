@@ -9,6 +9,7 @@ import {
   Users,
   X,
   LogOut,
+  XIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
@@ -45,12 +46,22 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
           isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
-        <div className="flex items-center justify-between p-3 ">
+        <div className="flex justify-between p-3 ">
           <div className="flex items-center space-x-3">
             <Image src="icon.png" alt="Logo da Axon" width={32} height={32} />
             <span className="font-semibold">Axon</span>
           </div>
-          <ThemeToggle />
+          <div className="flex items-center space-x-2">
+            <ThemeToggle />
+            {/* 👇 O XIcon agora é um botão funcional 👇 */}
+            <button
+              onClick={onClose}
+              className="md:hidden" // Esconde em telas médias (md) e maiores
+              aria-label="Fechar menu"
+            >
+              <XIcon className="h-6 w-6 hover:bg-red-600 rounded-lg" />
+            </button>
+          </div>
         </div>
 
         <nav className="mt-8">
