@@ -99,3 +99,19 @@ Este projeto está sob a licença MIT.
 
 ```
 ```
+back:
+composer require pusher/pusher-php-server
+composer require beyondcode/laravel-websockets
+
+front:
+npm install laravel-echo pusher-js
+
+depois: php artisan vendor:publish --provider="BeyondCode\LaravelWebSockets\WebSocketsServiceProvider"
+depois: php artisan make:event Notificacao
+
+dps isso: php artisan websockets:serve
+dps disso: composer require doctrine/dbal
+
+
+front:
+npm install @supabase/supabase-js
