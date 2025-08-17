@@ -13,18 +13,20 @@ class CreateMensagensTable extends Migration
      */
     public function up()
     {
-        Schema::create('Mensagens', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps(); // Corresponde a created_at
+        if (!Schema::hasTable('Mensagens')) {
+            Schema::create('Mensagens', function (Blueprint $table) {
+                $table->id();
+                $table->timestamps(); // Corresponde a created_at
 
-            $table->unsignedBigInteger('cliente_id');
-            $table->foreign('cliente_id')->references('id')->on('Clientes')->onDelete('cascade');
+                $table->unsignedBigInteger('cliente_id');
+                $table->foreign('cliente_id')->references('id')->on('Clientes')->onDelete('cascade');
 
-            $table->text('texto_mensagem');
-            $table->string('remetente');
-            $table->string('id_whatsapp_msg');
-            $table->string('tipo_mensagem');
-        });
+                $table->text('texto_mensagem');
+                $table->string('remetente');
+                $table->string('id_whatsapp_msg');
+                $table->string('tipo_mensagem');
+            });
+        }
     }
 
     /**

@@ -8,6 +8,8 @@ use App\Http\Controllers\MensagemController;
 use App\Http\Controllers\AnaliseVendaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
+use App\Events\Notificacao;
+use App\Http\Controllers\RelatorioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,4 +59,12 @@ Route::middleware(['auth:sanctum', 'isAdmin'])->group(function () {
     Route::post('/users', [UserController::class, 'store']);
 });
 Route::get('/users', [UserController::class, 'index'])
-     ->middleware(['auth:sanctum', 'isManagerOrAdmin']);
+    ->middleware(['auth:sanctum', 'isManagerOrAdmin']);
+
+// Notificacao
+Route::get('/teste-notificacao', function () {
+    event(new Notificacao('Mensagem de teste'));
+    return 'Notificação enviada!';
+});
+
+Route::get('/relatorio-vendas', [RelatorioController::class, 'index']);
