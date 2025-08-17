@@ -76,9 +76,6 @@ export function ConversationsList({
     }
   };
 
-  // Esta função não é mais necessária aqui, pois foi movida para dentro do ScoreRating.tsx
-  // const getScoreColor = (score: number) => { ... };
-
   return (
     <div className="rounded-lg shadow-sm">
       <div className="p-4">
@@ -87,7 +84,7 @@ export function ConversationsList({
 
           <div className="flex items-center gap-2 ">
             <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-500 dark:text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-600 dark:text-gray-400" />
               <input
                 type="text"
                 placeholder="Buscar cliente..."
@@ -100,7 +97,7 @@ export function ConversationsList({
             <select
               value={statusFilter}
               onChange={(e) => onStatusFilterChange(e.target.value as any)}
-              className="px-3 py-2 border rounded-lg bg-gray-100 dark:bg-gray-900 text-gray-600 dark:text-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
+              className="px-3 py-2 border rounded-lg bg-gray-200 dark:bg-gray-900 text-gray-600 dark:text-gray-400 focus:ring-2 focus:ring-orange-500 focus:border-transparent text-sm"
             >
               <option value="all">Todos</option>
               <option value="active">Ativo</option>
@@ -127,7 +124,7 @@ export function ConversationsList({
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
               {/* Avatar e nome */}
               <div className="flex items-center gap-3 flex-shrink-0">
-                <div className="w-12 h-12 bg-orange-500 rounded-full flex items-center justify-center">
+                <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
                   <User className="w-6 h-6 text-white" />
                 </div>
                 <div>
@@ -210,7 +207,7 @@ export function ConversationsList({
               </div>
 
               {/* Botão de análise */}
-              <div className="flex items-center mx-auto justify-end md:justify-center mt-2 md:mt-0 min-w-[180px]">
+              <div className="flex text-sm items-center mx-auto justify-end md:justify-center mt-2 md:mt-0 min-w-[180px]">
                 {conversation.analiseVenda ? (
                   <button
                     onClick={(e) => {
@@ -220,7 +217,7 @@ export function ConversationsList({
                     className="p-2 bg-orange-700 dark:bg-orange-800 text-slate-100 shadow-md items-center flex border gap-2 rounded-full transition-colors hover:text-slate-200 hover:bg-orange-900"
                     title="Ver análise da IA"
                   >
-                    <Bot className="w-6 h-6" /> Analise da conversa
+                    <Bot className="w-5 h-5" /> Analise da conversa
                   </button>
                 ) : (
                   <button
@@ -231,7 +228,7 @@ export function ConversationsList({
                     className="p-2 text-slate-100 bg-orange-500 flex hover:bg-orange-600 shadow-md hover:text-slate-200 items-center border gap-2 rounded-full transition-colors"
                     title="Analisar conversa com I.A"
                   >
-                    <Bot className="w-6 h-6" /> Analisar conversa
+                    <Bot className="w-5 h-5" /> Analisar conversa
                   </button>
                 )}
               </div>

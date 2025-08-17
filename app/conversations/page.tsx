@@ -83,7 +83,23 @@ export default function ConversationsPage() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-4">
+        <main
+          className="flex-1 p-4 overflow-y-auto"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          <style jsx global>{`
+            @media (max-width: 768px) {
+              main::-webkit-scrollbar {
+          display: none;
+              }
+              main {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE 10+ */
+              }
+            }
+          `}</style>
           <div className="max-w-7xl mx-auto">
             <ConversationsList 
               conversations={conversations}

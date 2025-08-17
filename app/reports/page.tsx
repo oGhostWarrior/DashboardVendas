@@ -11,6 +11,7 @@ import {
   Calendar,
   Download,
 } from "lucide-react";
+import { isDateRange } from "react-day-picker";
 
 export default function ReportsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -44,8 +45,8 @@ export default function ReportsPage() {
             </button>
             <h1 className="text-xl font-semibold">Relatórios</h1>
           </div>
-          <div className="flex items-center space-x-2">
-            <button className="flex items-center space-x-2 px-3 py-2 bg-orange-600 rounded-lg hover:bg-blue-700 transition-colors">
+          <div className="flex text-sm  items-center space-x-2">
+            <button className="flex text-gray-100 items-center space-x-2 px-3 py-2 bg-orange-600 rounded-lg hover:bg-orange-700 transition-colors">
               <Download className="w-4 h-4" />
               <span className="hidden sm:inline">Exportar</span>
             </button>
@@ -53,26 +54,46 @@ export default function ReportsPage() {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto p-4">
+        <main
+          className="flex-1 p-4 overflow-y-auto"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          <style jsx global>{`
+            @media (max-width: 768px) {
+              main::-webkit-scrollbar {
+          display: none;
+              }
+              main {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE 10+ */
+              }
+            }
+          `}</style>
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Filtros */}
-            <div className="p-4 rounded-lg shadow-sm border">
-              <div className="flex flex-col space-y-4 md:flex-row md:items-center md:space-y-0 md:space-x-4">
-                <div className="flex items-center space-x-2">
-                  <Calendar className="w-4 h-4" />
-                  <select className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+            <div className="p-4 rounded-lg text-sm shadow-sm max-w-xl ">
+              <div className="flex flex-row items-center gap-4">
+                <div className="flex items-center space-x-2 flex-1 min-w-0">
+                  <Calendar className="w-6 h-6" />
+                  <select className="w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
                     <option>Últimos 7 dias</option>
                     <option>Últimos 30 dias</option>
                     <option>Últimos 3 meses</option>
                     <option>Personalizado</option>
                   </select>
                 </div>
-                <select className="px-3 py-2 border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
-                  <option>Todos os vendedores</option>
-                  <option>Maria Santos</option>
-                  <option>Carlos Oliveira</option>
-                  <option>Ana Costa</option>
-                </select>
+                <div className="flex items-center space-x-2 flex-1 min-w-0">
+                  {/* Ícone de usuário para filtro de vendedores */}
+                  <Users className="w-6 h-6" />
+                  <select className="w-full px-3 py-2 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent">
+                    <option>Todos</option>
+                    <option>Maria Santos</option>
+                    <option>Carlos Oliveira</option>
+                    <option>Ana Costa</option>
+                  </select>
+                </div>
               </div>
             </div>
 

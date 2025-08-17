@@ -92,7 +92,23 @@ export default function TeamPage() {
           </header>
 
           {/* Main Content */}
-          <main className="flex-1 overflow-y-auto p-4">
+          <main
+          className="flex-1 p-4 overflow-y-auto"
+          style={{
+            WebkitOverflowScrolling: 'touch',
+          }}
+        >
+          <style jsx global>{`
+            @media (max-width: 768px) {
+              main::-webkit-scrollbar {
+          display: none;
+              }
+              main {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE 10+ */
+              }
+            }
+          `}</style>
             <div className="max-w-7xl mx-auto space-y-6">
               {/* Team Overview */}
               <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
@@ -138,12 +154,12 @@ export default function TeamPage() {
               </div>
 
               {/* Team Members */}
-              <div className="rounded-lg shadow-sm border">
-                <div className="p-4 border-b">
+              <div className="rounded-lg shadow-sm ">
+                <div className="p-4">
                   <h2 className="text-lg font-semibold">Membros da Equipe</h2>
                 </div>
 
-                <div className="divide-y">
+                <div className="divide-y border rounded-xl">
                   {loading
                     ? // Estado de Carregamento com Skeletons
                       Array.from({ length: 3 }).map((_, index) => (
