@@ -30,7 +30,7 @@ export default function TeamPage() {
   };
 
   const getAvatarInitials = (name: string = "") => {
-    const nameParts = name.split(" ").filter(Boolean); // filter(Boolean) remove espaços extras
+    const nameParts = name.split(" ").filter(Boolean);
     if (nameParts.length > 1) {
       return `${nameParts[0][0]}${
         nameParts[nameParts.length - 1][0]

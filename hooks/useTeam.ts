@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { apiClient } from '@/lib/api';
-import { User } from '@/types'; // Supondo que você tenha um tipo User em types/index.ts
+import { User } from '@/types';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function useTeam() {
+  const { isAuthenticated, loading: authLoading } = useAuth();
   const [team, setTeam] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -20,8 +22,13 @@ export function useTeam() {
   };
 
   useEffect(() => {
-    fetchTeam();
-  }, []);
+    if (isAuthenticated && !authLoading) {
+      fetchTeam();
+    } else if (!authLoading) {
+      setTeam([]);
+      setLoading(false);
+    }
+  }, [isAuthenticated, authLoading]);
 
   return { team, loading, error, refetch: fetchTeam };
 }

@@ -1,11 +1,14 @@
 import { ReactNode } from "react";
 
 export interface User {
-  role: ReactNode;
-  whatsapp_number: ReactNode;
+  role: 'vendedor' | 'gerente' | 'administrador';
+  whatsapp_number: string;
   id: number;
   name: string;
   email: string;
+  total_clients: number;
+  messages_today: number;
+  average_score: number;
 }
 
 export interface Empresa {
