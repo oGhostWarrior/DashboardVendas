@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -32,7 +33,7 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = User::all();
+        $users = DB::table('team_member_stats')->get();
         return response()->json($users);
     }
 }

@@ -18,15 +18,14 @@
 
 @layer base {
   :root {
-    /* --- TEMA CLARO --- */
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%; /* Texto principal: Preto suave */
-    --muted-foreground: 215.4 16.3% 46.9%; /* Texto secundário: Cinza médio */
+    /* --- TEMA CLARO SUAVE (COOL GRAY) --- */
+    --background: 210 40% 98%; /* 👈 MUDANÇA PRINCIPAL: De branco puro para cinza-claro */
+    --foreground: 222.2 84% 4.9%;
 
-    --card: 0 0% 100%;
+    --card: 0 0% 100%; /* Card em branco puro para "flutuar" sobre o fundo */
     --card-foreground: 222.2 84% 4.9%;
 
-    --popover: 0 0% 100%;
+    --popover: 0 0% 100%; /* Popover também em branco puro */
     --popover-foreground: 222.2 84% 4.9%;
 
     --primary: 24.6 95% 53.1%;
@@ -35,8 +34,8 @@
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
 
-    --muted: 210 40% 96.1%;
-    /* --muted-foreground já definido acima */
+    --muted: 210 40% 94%; /* 👈 AJUSTE: Levemente mais escuro para contraste */
+    --muted-foreground: 215.4 16.3% 46.9%;
 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
@@ -44,8 +43,8 @@
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 60 9.1% 97.8%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
+    --border: 214.3 31.8% 90%; /* 👈 AJUSTE: Mais visível no novo fundo */
+    --input: 214.3 31.8% 90%;  /* 👈 AJUSTE: Mais visível no novo fundo */
     --ring: 222.2 84% 4.9%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
