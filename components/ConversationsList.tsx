@@ -10,6 +10,7 @@ import {
   Phone,
   User,
   Star,
+  ArrowUpRightIcon,
 } from "lucide-react";
 import { ConversationSummary } from "@/types";
 import { cn } from "@/lib/utils";
@@ -117,123 +118,141 @@ export function ConversationsList({
         )}
 
         {filteredConversations.map((conversation) => (
-          <div
+            <div
             key={conversation.cliente.id}
             className="p-4 transition-colors border mb-4 rounded-lg bg-white dark:bg-gray-950 hover:shadow-md"
-          >
+            // Só ativa onClick em telas md ou maiores
+            onClick={(e) => {
+              if (window.innerWidth >= 768) {
+              onConversationClick(conversation);
+              }
+            }}
+            style={{ cursor: "pointer" }}
+            >
             <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
               {/* Avatar e nome */}
-              <div className="flex items-center gap-3 flex-shrink-0">
-                <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
-                  <User className="w-6 h-6 text-white" />
-                </div>
-                <div>
-                  <div className="flex items-center gap-2">
-                    <h3 className="font-medium truncate max-w-[140px] md:max-w-[180px]">
-                      {conversation.cliente.nome}
-                    </h3>
-                    <div className="relative group">
-                      <div
-                        className={cn(
-                          "w-3 h-3 rounded-full cursor-pointer",
-                          getStatusColor(conversation.status)
-                        )}
-                      ></div>
-                      <div
-                        className="
-                          absolute bottom-full left-1/2 -translate-x-1/2 mb-2
-                          px-2 py-1 rounded-md shadow-lg
-                          bg-gray-800 text-white text-xs font-medium capitalize z-10
-                          invisible opacity-0 group-hover:visible group-hover:opacity-100
-                          transition-opacity duration-300 whitespace-nowrap"
-                      >
-                        {conversation.status}
-                      </div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 mt-1">
-                    {/* SUBSTITUIR O ANTIGO SPAN DO SCORE POR ISTO */}
-                    {conversation.analiseVenda && (
-                      <ScoreRating
-                        score={conversation.analiseVenda.score_atendimento}
-                      />
-                    )}
+              <div className="flex items-start gap-3 flex-shrink-0 w-full md:w-auto">
+              {/* Avatar e perfil */}
+              <div className="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center">
+                <User className="w-6 h-6 text-orange" />
+              </div>
+              <div className="flex flex-col flex-1 min-w-0">
+                <div className="flex items-center gap-2">
+                <h3 className="font-medium truncate max-w-[140px] md:max-w-[180px]">
+                  {conversation.cliente.nome}
+                </h3>
+                <div className="relative group">
+                  <div
+                  className={cn(
+                    "w-3 h-3 rounded-full cursor-pointer",
+                    getStatusColor(conversation.status)
+                  )}
+                  ></div>
+                  <div
+                  className="
+                    absolute bottom-full left-1/2 -translate-x-1/2 mb-2
+                    px-2 py-1 rounded-md shadow-lg
+                    bg-gray-800 text-white text-xs font-medium capitalize z-10
+                    invisible opacity-0 group-hover:visible group-hover:opacity-100
+                    transition-opacity duration-300 whitespace-nowrap"
+                  >
+                  {conversation.status}
                   </div>
                 </div>
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                {conversation.analiseVenda && (
+                  <ScoreRating
+                  score={conversation.analiseVenda.score_atendimento}
+                  />
+                )}
+                </div>
+              </div>
+              {/* Botão no canto superior direito */}
+              <button
+                onClick={(e) => {
+                e.stopPropagation();
+                onConversationClick(conversation);
+                }}
+                className="md:hidden ml-auto text-xs p-2 text-orange-500 flex hover:text-orange-800 items-center gap-2 rounded-full transition-colors self-start"
+                title="Abrir conversa"
+              >
+                <ArrowUpRightIcon className="w-7 h-7" />
+              </button>
               </div>
 
               {/* Informações principais */}
               <div className="flex-1 flex flex-col gap-2 min-w-0">
-                <div className="flex flex-wrap items-center gap-4 text-sm">
-                  <div className="flex items-center gap-1">
-                    <Phone className="w-4 h-4" />
-                    <span className="truncate">
-                      {conversation.cliente.clienteWhatsapp}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <MessageSquare className="w-4 h-4" />
-                    <span>{conversation.totalMensagens} mensagens</span>
-                  </div>
-                  {conversation.cliente.user && (
-                    <span className="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-800">
-                      {conversation.cliente.user.name}
-                    </span>
-                  )}
-                  <div className="flex items-center gap-1 text-xs text-gray-500">
-                    <Clock className="w-3 h-3" />
-                    <span>
-                      {formatTimestamp(conversation.ultimaMensagem.created_at)}
-                    </span>
-                  </div>
+              <div className="flex flex-wrap items-center gap-4 text-sm">
+                <div className="flex items-center gap-1">
+                <Phone className="w-4 h-4" />
+                <span className="truncate">
+                  {conversation.cliente.clienteWhatsapp}
+                </span>
                 </div>
-
-                {conversation.ultimaMensagem && (
-                  <div className="flex flex-col gap-1">
-                    <p className="text-sm truncate">
-                      <span className="font-medium">
-                        {conversation.ultimaMensagem.remetente === "CLIENTE"
-                          ? "Cliente"
-                          : "Empresa"}
-                        :
-                      </span>{" "}
-                      {conversation.ultimaMensagem.texto_mensagem}
-                    </p>
-                    <span className="text-xs text-gray-400">
-                      {conversation.ultimaMensagem.tipo_mensagem}
-                    </span>
-                  </div>
+                <div className="flex items-center gap-1">
+                <MessageSquare className="w-4 h-4" />
+                <span>{conversation.totalMensagens} mensagens</span>
+                </div>
+                {conversation.cliente.user && (
+                <span className="text-xs px-2 py-1 rounded bg-gray-100 dark:bg-gray-800">
+                  {conversation.cliente.user.name}
+                </span>
                 )}
+                <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Clock className="w-3 h-3" />
+                <span>
+                  {formatTimestamp(conversation.ultimaMensagem.created_at)}
+                </span>
+                </div>
+              </div>
+
+              {conversation.ultimaMensagem && (
+                <div className="flex flex-col gap-1">
+                <p className="text-sm truncate">
+                  <span className="font-medium">
+                  {conversation.ultimaMensagem.remetente === "CLIENTE"
+                    ? "Cliente"
+                    : "Empresa"}
+                  :
+                  </span>{" "}
+                  {conversation.ultimaMensagem.texto_mensagem}
+                </p>
+                <span className="text-xs text-gray-400">
+                  {conversation.ultimaMensagem.tipo_mensagem}
+                </span>
+                </div>
+              )}
               </div>
 
               {/* Botão de análise */}
-              <div className="flex text-sm items-center mx-auto justify-end md:justify-center mt-2 md:mt-0 min-w-[180px]">
-                {conversation.analiseVenda ? (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAIAnalysisClick(conversation);
-                    }}
-                    className="p-2 bg-orange-700 dark:bg-orange-800 text-slate-100 shadow-md items-center flex border gap-2 rounded-full transition-colors hover:text-slate-200 hover:bg-orange-900"
-                    title="Ver análise da IA"
-                  >
-                    <Bot className="w-5 h-5" /> Analise da conversa
-                  </button>
-                ) : (
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onAnalysisRequest(conversation.cliente.id);
-                    }}
-                    className="p-2 text-slate-100 bg-orange-500 flex hover:bg-orange-600 shadow-md hover:text-slate-200 items-center border gap-2 rounded-full transition-colors"
-                    title="Analisar conversa com I.A"
-                  >
-                    <Bot className="w-5 h-5" /> Analisar conversa
-                  </button>
-                )}
+              <div className="flex gap-2 text-sm items-center mx-auto justify-end md:justify-center mt-2 md:mt-0 min-w-[180px]">
+              {conversation.analiseVenda ? (
+                <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAIAnalysisClick(conversation);
+                }}
+                className="p-2 bg-orange-700 dark:bg-orange-800 text-slate-100 shadow-md items-center flex border gap-2 rounded-full transition-colors hover:text-slate-200 hover:bg-orange-900"
+                title="Ver análise da IA"
+                >
+                <Bot className="w-5 h-5" /> Analise da conversa
+                </button>
+              ) : (
+                <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onAnalysisRequest(conversation.cliente.id);
+                }}
+                className="p-2 text-slate-100 bg-orange-500 flex hover:bg-orange-600 shadow-md hover:text-slate-200 items-center border gap-2 rounded-full transition-colors"
+                title="Analisar conversa com I.A"
+                >
+                <Bot className="w-5 h-5" /> Analisar conversa
+                </button>
+              )}
               </div>
             </div>
-          </div>
+            </div>
         ))}
       </div>
 

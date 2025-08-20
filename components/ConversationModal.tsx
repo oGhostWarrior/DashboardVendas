@@ -41,11 +41,12 @@ export function ConversationModal({ conversationSummary, onClose }: Conversation
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-opacity-50">
-      <div className="rounded-lg shadow-xl max-w-4xl w-full max-h-[90vh] overflow-hidden flex flex-col">
-        <div className="flex items-center justify-between p-6 border-b ">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center">
+    <div className="bg-black fixed inset-0 z-50 flex items-center justify-center p-4 bg-opacity-80">
+      <div className="rounded-lg bg-background shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
+        {/* Header fixo */}
+        <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-background z-10">
+          <div className="flex items-center space-x-3">
+            <div className="p-2 rounded-lg">
               <User className="w-6 h-6" />
             </div>
             <div>
@@ -76,7 +77,7 @@ export function ConversationModal({ conversationSummary, onClose }: Conversation
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-lg transition-colors"
+            className="p-2 rounded-lg bg-red-500 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
