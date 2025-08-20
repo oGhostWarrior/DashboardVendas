@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use App\Events\Notificacao;
 use App\Http\Controllers\RelatorioController;
+use App\Http\Controllers\DBCheckController;
 
 /*
 |--------------------------------------------------------------------------
@@ -66,5 +67,8 @@ Route::get('/teste-notificacao', function () {
     event(new Notificacao('Mensagem de teste'));
     return 'Notificação enviada!';
 });
-
+// Api que retorna os dados do realtorio
 Route::get('/relatorio-vendas', [RelatorioController::class, 'index']);
+
+// Api que retorna o status da DB
+Route::get('/db-check', [DBCheckController::class, 'check']);
