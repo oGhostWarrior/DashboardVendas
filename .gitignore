@@ -37,3 +37,4 @@ next-env.d.ts
 
 # backend
 /back_api
+*.sql

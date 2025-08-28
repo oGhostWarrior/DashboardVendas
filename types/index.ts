@@ -49,6 +49,7 @@ export interface AnalisesVenda {
   resumo_ia: string;
   pontos_melhoria: string[];
   score_atendimento: number;
+  makeVenda: boolean;
   cliente?: Cliente;
 }
 
