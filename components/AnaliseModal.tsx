@@ -37,10 +37,10 @@ export function AnaliseModal({
   };
 
   return (
-    <div className="bg-black fixed inset-0 z-50 flex items-center justify-center p-4 bg-opacity-90">
+    <div className="bg-black fixed inset-0 z-50 flex items-center justify-center p-4 bg-opacity-80">
       <div className="rounded-lg bg-background shadow-xl max-w-2xl w-full max-h-[90vh] flex flex-col">
         {/* Header fixo */}
-        <div className="flex items-center justify-between p-6 border-b sticky top-0 bg-background z-10">
+        <div className="flex rounded-lg items-center justify-between p-6 border-b sticky top-0 bg-background z-10">
           <div className="flex items-center space-x-3">
             <div className="p-2 rounded-lg">
               <Bot className="w-8 h-8 text-orange-600" />
@@ -54,7 +54,7 @@ export function AnaliseModal({
             onClick={onClose}
             className="p-2 rounded-lg transition-colors"
           >
-            <X className="w-8 h-8 hover:bg-red-600 rounded-xl" />
+            <X className="w-6 h-6 hover:bg-red-500 rounded-lg" />
           </button>
         </div>
 
