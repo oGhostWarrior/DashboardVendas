@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ProtectedRoute } from '@/components/ProtectedRoute';
 import { Sidebar } from "@/components/Sidebar";
 import {
@@ -12,9 +12,50 @@ import {
   Download,
 } from "lucide-react";
 import { isDateRange } from "react-day-picker";
+import { set } from "date-fns";
 
 export default function ReportsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [relatorio, setRelatorio] = useState<any | null>(null);
+  
+  const fetchRelatorio = async()=>{
+    const response = await fetch('http://127.0.0.1:8000/api/relatorio-vendas');
+    const relatorioData = await response.json();
+
+    if (relatorioData)
+    {
+      setRelatorio(relatorioData)
+    }
+  }
+  
+  useEffect(()=>
+    {
+      fetchRelatorio();
+  }, [])
+
+   const metricas = useMemo(() => {
+    // Se o relatório ainda não chegou, retorna valores zerados.
+    if (!relatorio) {
+      return {
+        totalConversas: '...',
+        taxaConversao: 0,
+      };
+    }
+
+    // Pega os totais diretamente do payload da API. Sem cálculos manuais!
+    const totalConversas = relatorio.total_mensagens;
+    const totalVendas = relatorio.vendas_realizadas;
+
+    // Calcula a taxa de conversão com os valores corretos.
+    const taxaConversao = totalConversas > 0 
+      ? Math.round((totalVendas / totalConversas) * 100) 
+      : 0;
+      
+    // Com base no seu payload (2 vendas / 44 conversas), o resultado será 5%.
+
+    return { totalConversas, taxaConversao };
+
+  }, [relatorio]);
 
   return (
     <ProtectedRoute requiredRoles={['gerente', 'administrador']}>
@@ -108,7 +149,7 @@ export default function ReportsPage() {
                     +15%
                   </span>
                 </div>
-                <p className="text-2xl font-bold ">1,247</p>
+                <p className="text-2xl font-bold ">{relatorio?.total_mensagens}</p>
                 <p className="text-sm ">Total de Conversas</p>
               </div>
 
@@ -121,10 +162,11 @@ export default function ReportsPage() {
                     +8%
                   </span>
                 </div>
-                <p className="text-2xl font-bold">68%</p>
+                 <p className="text-2xl font-bold">
+  {relatorio ? `${metricas.taxaConversao}%` : '...%'}
+</p>
                 <p className="text-sm">Taxa de Conversão</p>
               </div>
-
               <div className="p-4 rounded-lg shadow-sm border">
                 <div className="flex items-center space-x-2 mb-2">
                   <div className="p-2 rounded-lg">
@@ -220,38 +262,6 @@ export default function ReportsPage() {
                       </div>
                     </div>
                   ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Análises da IA */}
-            <div className=" p-6 rounded-lg shadow-sm border">
-              <h3 className="text-lg font-semibold mb-4">
-                Insights da IA
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="p-4 rounded-lg">
-                  <h4 className="font-medium text-green-800 mb-2">
-                    Sentimento Positivo
-                  </h4>
-                  <p className="text-2xl font-bold text-green-600">74%</p>
-                  <p className="text-sm text-green-600">das conversas</p>
-                </div>
-                <div className="p-4 rounded-lg">
-                  <h4 className="font-medium text-yellow-800 mb-2">
-                    Risco Médio
-                  </h4>
-                  <p className="text-2xl font-bold text-yellow-600">23%</p>
-                  <p className="text-sm text-yellow-600">precisam atenção</p>
-                </div>
-                <div className="p-4 rounded-lg">
-                  <h4 className="font-medium text-blue-800 mb-2">
-                    Alta Intenção
-                  </h4>
-                  <p className="text-2xl font-bold text-blue-600">67%</p>
-                  <p className="text-sm text-blue-600">
-                    probabilidade de compra
-                  </p>
                 </div>
               </div>
             </div>

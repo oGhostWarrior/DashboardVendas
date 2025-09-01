@@ -12,7 +12,7 @@ class RelatorioController extends Controller
     {
         try {
             $cliente = $request->query('cliente');
-            
+
             $query = DB::table('AnalisesVendas');
             if ($cliente) {
                 $query->where('cliente_id', $cliente);
@@ -21,10 +21,19 @@ class RelatorioController extends Controller
             $totalMensagens = DB::table('Mensagens')->count();
             $totalClientes = DB::table('Clientes')->count();
 
-            // 🔹 Dias da semana
+            // Cria uma query base para contar as vendas, respeitando o filtro de cliente
+            $queryVendasStatus = DB::table('AnalisesVendas');
+            if ($cliente) {
+                $queryVendasStatus->where('cliente_id', $cliente);
+            }
+
+            // Executa a contagem condicional em uma única consulta ao banco de dados
+            $contagemVendas = $queryVendasStatus->select(
+                DB::raw('COUNT(CASE WHEN "makeVenda" = true THEN 1 END) as vendas_realizadas'),
+            )->first();
+
             $diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
-            // 🔹 Inicializa o array de conversas com 0
             $conversasPorDia = collect($diasSemana)->map(function ($dia) {
                 return [
                     'dia' => $dia,
@@ -53,6 +62,7 @@ class RelatorioController extends Controller
                 'total_mensagens' => $totalMensagens,
                 'total_clientes' => $totalClientes,
                 'conversas_por_dia' => $conversasPorDia,
+                'vendas_realizadas' => $contagemVendas->vendas_realizadas ?? 0,
             ]);
         } catch (\Exception $e) {
             return response()->json([
