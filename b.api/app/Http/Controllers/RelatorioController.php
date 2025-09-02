@@ -20,6 +20,8 @@ class RelatorioController extends Controller
             $dadosVendas = $query->get();
             $totalMensagens = DB::table('Mensagens')->count();
             $totalClientes = DB::table('Clientes')->count();
+            $totalClientesAnalisados = DB::table('AnalisesVendas')->count();
+
 
             // Cria uma query base para contar as vendas, respeitando o filtro de cliente
             $queryVendasStatus = DB::table('AnalisesVendas');
@@ -61,6 +63,7 @@ class RelatorioController extends Controller
                 'analises_vendas' => $dadosVendas,
                 'total_mensagens' => $totalMensagens,
                 'total_clientes' => $totalClientes,
+                'total_clientes_analisados' => $totalClientesAnalisados,
                 'conversas_por_dia' => $conversasPorDia,
                 'vendas_realizadas' => $contagemVendas->vendas_realizadas ?? 0,
             ]);
