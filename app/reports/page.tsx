@@ -242,6 +242,37 @@ export default function ReportsPage(): JSX.Element {
                   </div>
                 </div>
               </div>
+               {/* Análises da IA */}
+            <div className=" p-6 rounded-lg shadow-sm border">
+              <h3 className="text-lg font-semibold mb-4">
+                Insights da IA
+              </h3>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="p-4 rounded-lg">
+                  <h4 className="font-medium text-green-800 mb-2">
+                    Sentimento Positivo
+                  </h4>
+                  <p className="text-2xl font-bold text-green-600">74%</p>
+                  <p className="text-sm text-green-600">das conversas</p>
+                </div>
+                <div className="p-4 rounded-lg">
+                  <h4 className="font-medium text-yellow-800 mb-2">
+                    Risco Médio
+                  </h4>
+                  <p className="text-2xl font-bold text-yellow-600">23%</p>
+                  <p className="text-sm text-yellow-600">precisam atenção</p>
+                </div>
+                <div className="p-4 rounded-lg">
+                  <h4 className="font-medium text-blue-800 mb-2">
+                    Alta Intenção
+                  </h4>
+                  <p className="text-2xl font-bold text-blue-600">67%</p>
+                  <p className="text-sm text-blue-600">
+                    probabilidade de compra
+                  </p>
+                </div>
+              </div>
+            </div>
             </div>
           </main>
         </div>
