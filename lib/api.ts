@@ -168,7 +168,12 @@ class ApiClient {
       body: JSON.stringify({ status }),
     });
   }
-}
 
+
+  //relatorio
+  async getReportsData() {
+    return this.request<any>('/relatorio-vendas');
+  }
+}
 export const apiClient = new ApiClient(API_BASE_URL);
 export default apiClient;

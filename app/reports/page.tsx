@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { ProtectedRoute } from "@/components/ProtectedRoute";
 import { Sidebar } from "@/components/Sidebar";
+import { useReports } from "@/hooks/useReports";
 import {
   BarChart3,
   TrendingUp,
@@ -11,44 +12,23 @@ import {
   Calendar,
   Download,
 } from "lucide-react";
-import { isDateRange } from "react-day-picker";
-import { set } from "date-fns";
 
 export default function ReportsPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [relatorio, setRelatorio] = useState<any | null>(null);
-
-  const fetchRelatorio = async () => {
-    const response = await fetch("http://127.0.0.1:8000/api/relatorio-vendas");
-    const relatorioData = await response.json();
-
-    if (relatorioData) {
-      setRelatorio(relatorioData);
-    }
-  };
-
-  useEffect(() => {
-    fetchRelatorio();
-  }, []);
+  const { reportData: relatorio, loading } = useReports();
 
   const metricas = useMemo(() => {
-    // Se o relatório ainda não chegou, retorna valores zerados.
-    if (!relatorio) {
+    if (!relatorio || loading) {
       return {
         taxaConversao: 0,
       };
     }
-
-    // Pega os totais corretos do payload da API.
-    const totalClientes = relatorio.total_clientes; // Use o total de clientes
+    const totalClientes = relatorio.total_clientes;
     const totalVendas = relatorio.vendas_realizadas;
-
-    // Calcula a taxa de conversão sobre o TOTAL DE CLIENTES.
     const taxaConversao =
       totalClientes > 0 ? Math.round((totalVendas / totalClientes) * 100) : 0;
-
     return { taxaConversao };
-  }, [relatorio]);
+  }, [relatorio, loading]);
 
   return (
     <ProtectedRoute requiredRoles={["gerente", "administrador"]}>
