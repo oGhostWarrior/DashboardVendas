@@ -58,7 +58,6 @@ export default function ReportsPage(): JSX.Element {
     };
   }, [relatorio]);
 
-  // --- FUNÇÃO handleExportPDF COMPLETA E COM DIAGNÓSTICO ---
   const handleExportPDF = (): void => {
     console.log("Botão 'Exportar' clicado. Verificando dados...");
     console.log("Dados disponíveis no momento do clique (relatorio):", relatorio);
@@ -79,7 +78,6 @@ export default function ReportsPage(): JSX.Element {
       const pageWidth = doc.internal.pageSize.width;
       const margin = 40;
 
-      // 1. Cabeçalho
       doc.setFontSize(20); doc.setFont("helvetica", "bold");
       doc.text("Relatório de Performance de Vendas", margin, 60);
       doc.setFontSize(10); doc.setFont("helvetica", "normal");
@@ -89,7 +87,6 @@ export default function ReportsPage(): JSX.Element {
       doc.text(`Gerado em: ${dataGeracao}`, margin, 80);
       doc.setLineWidth(0.5); doc.line(margin, 90, pageWidth - margin, 90);
 
-      // 2. Métricas
       doc.setFontSize(14); doc.setFont("helvetica", "bold");
       doc.text("Resumo Geral", margin, 120);
       const metricasData = [
@@ -109,7 +106,6 @@ export default function ReportsPage(): JSX.Element {
           startX += 130;
       });
 
-      // 3. Gráfico de Barras no PDF
       doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0);
       doc.text("Conversas por Dia", margin, 250);
       if (chartData.hasData) {
@@ -136,7 +132,6 @@ export default function ReportsPage(): JSX.Element {
         doc.text("Sem dados de conversas para exibir no período.", margin, 280);
       }
 
-      // 4. Performance por Vendedor
       doc.setFontSize(14); doc.setFont("helvetica", "bold"); doc.setTextColor(0, 0, 0);
       doc.text("Performance por Vendedor", margin, 440);
       const sellersData: SellerPerformance[] = [
@@ -156,7 +151,6 @@ export default function ReportsPage(): JSX.Element {
           currentY += 40;
       });
 
-      // 5. Rodapé
       const pageCount = doc.getNumberOfPages();
       for (let i = 1; i <= pageCount; i++) {
           doc.setPage(i); doc.setFontSize(8);
@@ -242,7 +236,7 @@ export default function ReportsPage(): JSX.Element {
                   </div>
                 </div>
               </div>
-               {/* Análises da IA */}
+              
             <div className=" p-6 rounded-lg shadow-sm border">
               <h3 className="text-lg font-semibold mb-4">
                 Insights da IA
